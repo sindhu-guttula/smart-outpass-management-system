@@ -1,0 +1,2969 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Outpasses - Smart Digital Outpass</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            background-color: #f4f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar-custom {
+            background-color: #12355b;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: white !important;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .nav-link:hover {
+            opacity: 0.85;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .page-container {
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .page-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.10);
+        }
+
+        .page-title {
+            color: #12355b;
+            font-weight: bold;
+        }
+
+        .page-subtitle {
+            color: #777;
+        }
+
+
+        /* =====================================================
+           STUDENT INFO
+        ===================================================== */
+
+        .student-box {
+            background-color: #f4f7fb;
+            border: 1px solid #dce5ef;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+        }
+
+        .student-label {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .student-value {
+            font-weight: bold;
+            color: #333;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .summary-card {
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            background-color: white;
+            height: 100%;
+        }
+
+        .summary-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #12355b;
+        }
+
+        .summary-label {
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           OUTPASS CARD
+        ===================================================== */
+
+        .outpass-card {
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+
+        .outpass-card:hover {
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .selected-card {
+            border: 2px solid #0d6efd;
+        }
+
+        .outpass-id {
+            color: #12355b;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .detail-label {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #333;
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status-badge {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
+        .status-info {
+            background-color: #cff4fc;
+            color: #055160;
+        }
+
+
+        /* =====================================================
+           APPROVAL
+        ===================================================== */
+
+        .approval-section {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+
+
+        /* =====================================================
+           OTP
+        ===================================================== */
+
+        .otp-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fffaf0;
+            border: 1px solid #ffe69c;
+            border-radius: 10px;
+        }
+
+        .otp-title {
+            font-weight: bold;
+            color: #664d03;
+            margin-bottom: 7px;
+        }
+
+        .otp-text {
+            color: #664d03;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .otp-input {
+            max-width: 250px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 5px;
+        }
+
+
+        /* =====================================================
+           DIGITAL PASS
+        ===================================================== */
+
+        .pass-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f0fff5;
+            border: 1px solid #badbcc;
+            border-radius: 10px;
+        }
+
+        .pass-title {
+            font-weight: bold;
+            color: #0f5132;
+            margin-bottom: 7px;
+        }
+
+        .pass-text {
+            color: #0f5132;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+
+        /* =====================================================
+           SECURITY
+        ===================================================== */
+
+        .security-section {
+            margin-top: 20px;
+            padding: 15px 18px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #777;
+        }
+
+
+        /* =====================================================
+           LOADING
+        ===================================================== */
+
+        .loading-state {
+            text-align: center;
+            padding: 50px;
+            color: #777;
+        }
+
+
+        /* =====================================================
+           ERROR
+        ===================================================== */
+
+        .error-state {
+            padding: 30px;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 768px) {
+
+            .page-container {
+                margin: 20px 10px;
+            }
+
+            .page-card {
+                padding: 20px;
+            }
+
+            .outpass-id {
+                font-size: 16px;
+            }
+
+            .otp-input {
+                max-width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-custom">
+
+    <div class="container-fluid">
+
+        <a
+            class="navbar-brand"
+            href="dashboard.html"
+        >
+            SMART OUTPASS
+        </a>
+
+
+        <div>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="dashboard.html"
+            >
+                Dashboard
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="history.html"
+            >
+                History
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="notifications.html"
+            >
+                Notifications
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block"
+                href="../index.html"
+                id="logoutLink"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="container page-container">
+
+    <div class="page-card">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <div
+            class="d-flex justify-content-between
+                   align-items-center
+                   flex-wrap
+                   gap-2"
+        >
+
+            <div>
+
+                <h2 class="page-title mb-1">
+                    My Outpasses
+                </h2>
+
+                <p class="page-subtitle mb-0">
+                    View your submitted outpass requests and
+                    their current approval status.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="btn btn-outline-primary"
+                id="refreshButton"
+            >
+                ↻ Refresh
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             STUDENT INFORMATION
+        ================================================== -->
+
+        <div class="student-box mt-4">
+
+            <div class="row">
+
+                <div class="col-md-3 mb-3 mb-md-0">
+
+                    <div class="student-label">
+                        Student Name
+                    </div>
+
+                    <div
+                        class="student-value"
+                        id="studentName"
+                    >
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3 mb-3 mb-md-0">
+
+                    <div class="student-label">
+                        Roll Number
+                    </div>
+
+                    <div
+                        class="student-value"
+                        id="studentRollNumber"
+                    >
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3 mb-3 mb-md-0">
+
+                    <div class="student-label">
+                        Department
+                    </div>
+
+                    <div
+                        class="student-value"
+                        id="studentDepartment"
+                    >
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <div class="student-label">
+                        Year
+                    </div>
+
+                    <div
+                        class="student-value"
+                        id="studentYear"
+                    >
+                        Loading...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SUMMARY
+        ================================================== -->
+
+        <div class="row g-3 mb-4">
+
+            <div class="col-md-3">
+
+                <div class="summary-card">
+
+                    <div
+                        class="summary-number"
+                        id="totalCount"
+                    >
+                        0
+                    </div>
+
+                    <div class="summary-label">
+                        Total Requests
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="summary-card">
+
+                    <div
+                        class="summary-number"
+                        id="pendingCount"
+                    >
+                        0
+                    </div>
+
+                    <div class="summary-label">
+                        Pending
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="summary-card">
+
+                    <div
+                        class="summary-number"
+                        id="approvedCount"
+                    >
+                        0
+                    </div>
+
+                    <div class="summary-label">
+                        Approved
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="summary-card">
+
+                    <div
+                        class="summary-number"
+                        id="completedCount"
+                    >
+                        0
+                    </div>
+
+                    <div class="summary-label">
+                        Completed
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             REQUESTS
+        ================================================== -->
+
+        <div id="requestsContainer">
+
+            <div class="loading-state">
+
+                <div
+                    class="spinner-border text-primary mb-3"
+                    role="status"
+                ></div>
+
+                <p>
+                    Loading your outpass requests...
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+<script>
+
+"use strict";
+
+
+/* =====================================================
+   API
+===================================================== */
+
+const API_URL =
+    "http://127.0.0.1:5000";
+
+
+/* =====================================================
+   DOM
+===================================================== */
+
+const requestsContainer =
+    document.getElementById(
+        "requestsContainer"
+    );
+
+const refreshButton =
+    document.getElementById(
+        "refreshButton"
+    );
+
+const totalCount =
+    document.getElementById(
+        "totalCount"
+    );
+
+const pendingCount =
+    document.getElementById(
+        "pendingCount"
+    );
+
+const approvedCount =
+    document.getElementById(
+        "approvedCount"
+    );
+
+const completedCount =
+    document.getElementById(
+        "completedCount"
+    );
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+let token =
+    localStorage.getItem(
+        "smart_outpass_token"
+    );
+
+
+let currentUser = null;
+
+
+try {
+
+    const storedUser =
+        localStorage.getItem(
+            "smart_outpass_user"
+        );
+
+    if (storedUser) {
+
+        currentUser =
+            JSON.parse(storedUser);
+
+    }
+
+}
+catch (error) {
+
+    console.error(
+        "Invalid stored user:",
+        error
+    );
+
+}
+
+
+/* =====================================================
+   LOGIN CHECK
+===================================================== */
+
+if (
+    !token ||
+    !currentUser
+) {
+
+    window.location.href =
+        "../index.html";
+
+}
+
+
+/* =====================================================
+   ROLE CHECK
+===================================================== */
+
+if (
+    currentUser &&
+    currentUser.role &&
+    String(
+        currentUser.role
+    ).toLowerCase() !== "student"
+) {
+
+    requestsContainer.innerHTML = `
+
+        <div class="alert alert-danger error-state">
+
+            <h5>
+                Access Denied
+            </h5>
+
+            <p class="mb-0">
+                This page is available only for student accounts.
+            </p>
+
+        </div>
+
+    `;
+
+    refreshButton.disabled =
+        true;
+
+}
+
+
+/* =====================================================
+   STUDENT INFORMATION
+===================================================== */
+
+const studentRollNumber =
+    String(
+        currentUser?.roll_number ||
+        currentUser?.rollNumber ||
+        currentUser?.username ||
+        ""
+    ).trim();
+
+
+const studentName =
+    currentUser?.name ||
+    currentUser?.student_name ||
+    "Student";
+
+
+const studentDepartment =
+    currentUser?.department ||
+    "-";
+
+
+const studentYear =
+    currentUser?.year ||
+    "-";
+
+
+document.getElementById(
+    "studentName"
+).textContent =
+    studentName;
+
+
+document.getElementById(
+    "studentRollNumber"
+).textContent =
+    studentRollNumber || "-";
+
+
+document.getElementById(
+    "studentDepartment"
+).textContent =
+    studentDepartment;
+
+
+document.getElementById(
+    "studentYear"
+).textContent =
+    studentYear;
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   SAFE ELEMENT ID
+===================================================== */
+
+function safeElementKey(value) {
+
+    return encodeURIComponent(
+        String(value || "")
+    )
+    .replace(
+        /%/g,
+        "_"
+    );
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(value) {
+
+    if (!value) {
+        return "-";
+    }
+
+
+    const text =
+        String(value)
+            .substring(
+                0,
+                10
+            );
+
+
+    const parts =
+        text.split("-");
+
+
+    if (
+        parts.length !== 3
+    ) {
+
+        return text;
+
+    }
+
+
+    const year =
+        Number(parts[0]);
+
+    const month =
+        Number(parts[1]);
+
+    const day =
+        Number(parts[2]);
+
+
+    if (
+        !year ||
+        !month ||
+        !day
+    ) {
+
+        return text;
+
+    }
+
+
+    const date =
+        new Date(
+            year,
+            month - 1,
+            day
+        );
+
+
+    return date.toLocaleDateString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+/* =====================================================
+   FORMAT TIME
+===================================================== */
+
+function formatTime(value) {
+
+    if (!value) {
+        return "-";
+    }
+
+
+    const text =
+        String(value);
+
+
+    const match =
+        text.match(
+            /^(\d{1,2}):(\d{2})(?::(\d{2}))?/
+        );
+
+
+    if (!match) {
+        return text;
+    }
+
+
+    let hours =
+        Number(match[1]);
+
+
+    const minutes =
+        match[2];
+
+
+    const suffix =
+        hours >= 12
+            ? "PM"
+            : "AM";
+
+
+    hours =
+        hours % 12 || 12;
+
+
+    return (
+        hours +
+        ":" +
+        minutes +
+        " " +
+        suffix
+    );
+
+}
+
+
+/* =====================================================
+   FORMAT DATETIME
+===================================================== */
+
+function formatDateTime(value) {
+
+    if (!value) {
+        return "-";
+    }
+
+
+    const text =
+        String(value).trim();
+
+
+    const match =
+        text.match(
+            /^(\d{4}-\d{2}-\d{2})[ T](\d{1,2}:\d{2}(?::\d{2})?)/
+        );
+
+
+    if (match) {
+
+        return (
+            formatDate(match[1]) +
+            " " +
+            formatTime(match[2])
+        );
+
+    }
+
+
+    return text;
+
+}
+
+
+/* =====================================================
+   STATUS CLASS
+===================================================== */
+
+function getStatusClass(status) {
+
+    const value =
+        String(
+            status || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    if (
+        value.includes("rejected") ||
+        value.includes("reject") ||
+        value.includes("denied")
+    ) {
+
+        return "status-rejected";
+
+    }
+
+
+    if (
+        value.includes("returned") ||
+        value.includes("completed") ||
+        value.includes("approved")
+    ) {
+
+        return "status-approved";
+
+    }
+
+
+    if (
+        value.includes("exited") ||
+        value.includes("outside")
+    ) {
+
+        return "status-info";
+
+    }
+
+
+    return "status-pending";
+
+}
+
+
+/* =====================================================
+   GET OVERALL STATUS
+===================================================== */
+
+function getOverallStatus(request) {
+
+    const overall =
+        String(
+            request.overall_status || ""
+        ).trim();
+
+
+    if (overall) {
+        return overall;
+    }
+
+
+    const parent =
+        String(
+            request.parent_status || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    const mentor =
+        String(
+            request.mentor_status || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    const security =
+        String(
+            request.security_status || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    if (
+        security.includes("returned") ||
+        security.includes("completed")
+    ) {
+
+        return "Returned";
+
+    }
+
+
+    if (
+        security.includes("exited") ||
+        security.includes("outside")
+    ) {
+
+        return "Currently Outside";
+
+    }
+
+
+    if (
+        parent === "approved" &&
+        mentor === "approved"
+    ) {
+
+        return "Approved";
+
+    }
+
+
+    if (
+        mentor.includes("reject")
+    ) {
+
+        return "Rejected by Mentor";
+
+    }
+
+
+    if (
+        parent.includes("reject")
+    ) {
+
+        return "Rejected by Parent";
+
+    }
+
+
+    if (
+        parent === "approved"
+    ) {
+
+        return "Waiting for Mentor Approval";
+
+    }
+
+
+    return "Waiting for Parent Approval";
+
+}
+
+
+/* =====================================================
+   APPROVAL CHECK
+===================================================== */
+
+function isPassApproved(request) {
+
+    const parent =
+        String(
+            request.parent_status || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    const mentor =
+        String(
+            request.mentor_status || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    return (
+        parent === "approved" &&
+        mentor === "approved"
+    );
+
+}
+
+
+/* =====================================================
+   REJECTED CHECK
+===================================================== */
+
+function isRejected(request) {
+
+    const parent =
+        String(
+            request.parent_status || ""
+        )
+        .toLowerCase();
+
+
+    const mentor =
+        String(
+            request.mentor_status || ""
+        )
+        .toLowerCase();
+
+
+    const overall =
+        String(
+            request.overall_status || ""
+        )
+        .toLowerCase();
+
+
+    return (
+        parent.includes("reject") ||
+        mentor.includes("reject") ||
+        overall.includes("reject")
+    );
+
+}
+
+
+/* =====================================================
+   GET REQUEST ARRAY
+===================================================== */
+
+function getRequestArray(result) {
+
+    if (
+        Array.isArray(result)
+    ) {
+
+        return result;
+
+    }
+
+
+    if (
+        result &&
+        Array.isArray(result.requests)
+    ) {
+
+        return result.requests;
+
+    }
+
+
+    if (
+        result &&
+        Array.isArray(result.outpasses)
+    ) {
+
+        return result.outpasses;
+
+    }
+
+
+    if (
+        result &&
+        Array.isArray(result.data)
+    ) {
+
+        return result.data;
+
+    }
+
+
+    return [];
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logoutUser() {
+
+    localStorage.removeItem(
+        "smart_outpass_token"
+    );
+
+    localStorage.removeItem(
+        "smart_outpass_user"
+    );
+
+    localStorage.removeItem(
+        "smart_outpass_selected_id"
+    );
+
+    localStorage.removeItem(
+        "smart_outpass_selected_outpass_id"
+    );
+
+    localStorage.removeItem(
+        "selectedOutpassId"
+    );
+
+
+    window.location.href =
+        "../index.html";
+
+}
+
+
+/* =====================================================
+   OPEN DIGITAL PASS
+===================================================== */
+
+function openDigitalPass(
+    outpassId
+) {
+
+    if (!outpassId) {
+
+        alert(
+            "Outpass ID is missing."
+        );
+
+        return;
+
+    }
+
+
+    localStorage.setItem(
+        "smart_outpass_selected_id",
+        String(outpassId)
+    );
+
+
+    localStorage.setItem(
+        "smart_outpass_selected_outpass_id",
+        String(outpassId)
+    );
+
+
+    localStorage.setItem(
+        "selectedOutpassId",
+        String(outpassId)
+    );
+
+
+    window.location.href =
+        "pass.html?outpass_id=" +
+        encodeURIComponent(
+            outpassId
+        );
+
+}
+
+
+/* =====================================================
+   API REQUEST
+===================================================== */
+
+async function apiRequest(
+    endpoint,
+    options = {}
+) {
+
+    token =
+        localStorage.getItem(
+            "smart_outpass_token"
+        );
+
+
+    if (!token) {
+
+        logoutUser();
+
+        throw new Error(
+            "Authentication session not found."
+        );
+
+    }
+
+
+    const headers = {
+
+        "Accept":
+            "application/json",
+
+        ...(options.headers || {})
+
+    };
+
+
+    if (
+        options.body &&
+        !headers["Content-Type"]
+    ) {
+
+        headers["Content-Type"] =
+            "application/json";
+
+    }
+
+
+    headers["Authorization"] =
+        "Bearer " + token;
+
+
+    let response;
+
+
+    try {
+
+        response =
+            await fetch(
+                API_URL + endpoint,
+                {
+                    ...options,
+                    headers
+                }
+            );
+
+    }
+    catch (error) {
+
+        throw new Error(
+            "Cannot connect to the Flask backend. Make sure app.py is running on http://127.0.0.1:5000."
+        );
+
+    }
+
+
+    let result = null;
+
+
+    try {
+
+        result =
+            await response.json();
+
+    }
+    catch (error) {
+
+        result = null;
+
+    }
+
+
+    if (
+        response.status === 401
+    ) {
+
+        logoutUser();
+
+        throw new Error(
+            "Your login session has expired. Please login again."
+        );
+
+    }
+
+
+    if (
+        response.status === 403
+    ) {
+
+        throw new Error(
+            result?.message ||
+            "You are not authorized to access this information."
+        );
+
+    }
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            result?.message ||
+            result?.error ||
+            `Server error (${response.status}).`
+        );
+
+    }
+
+
+    return result;
+
+}
+
+
+/* =====================================================
+   LOAD OUTPASSES
+===================================================== */
+
+async function loadOutpassRequests() {
+
+    if (
+        !token ||
+        !currentUser
+    ) {
+
+        logoutUser();
+
+        return;
+
+    }
+
+
+    requestsContainer.innerHTML = `
+
+        <div class="loading-state">
+
+            <div
+                class="spinner-border text-primary mb-3"
+                role="status"
+            ></div>
+
+            <p>
+                Loading your outpass requests...
+            </p>
+
+        </div>
+
+    `;
+
+
+    refreshButton.disabled =
+        true;
+
+    refreshButton.innerText =
+        "Loading...";
+
+
+    try {
+
+        /*
+         * IMPORTANT:
+         *
+         * The backend returns the student's
+         * records from MySQL.
+         *
+         * We do NOT use localStorage
+         * as the source of outpass data.
+         */
+
+        const result =
+            await apiRequest(
+                "/api/outpasses"
+            );
+
+
+        const allRequests =
+            getRequestArray(
+                result
+            );
+
+
+        /*
+         * The backend already filters student
+         * records by authenticated roll number.
+         *
+         * We perform a second frontend filter
+         * for additional UI safety.
+         */
+
+        const requests =
+            allRequests.filter(
+                function(request) {
+
+                    const requestRoll =
+                        String(
+                            request.roll_number ||
+                            ""
+                        ).trim();
+
+
+                    return (
+                        !studentRollNumber ||
+                        requestRoll ===
+                            studentRollNumber
+                    );
+
+                }
+            );
+
+
+        displayRequests(
+            requests
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "My Outpasses loading error:",
+            error
+        );
+
+
+        totalCount.textContent =
+            "0";
+
+        pendingCount.textContent =
+            "0";
+
+        approvedCount.textContent =
+            "0";
+
+        completedCount.textContent =
+            "0";
+
+
+        requestsContainer.innerHTML = `
+
+            <div class="alert alert-danger error-state">
+
+                <h5>
+                    Unable to load your outpasses
+                </h5>
+
+                <p class="mb-3">
+                    ${escapeHTML(
+                        error.message ||
+                        "Unable to retrieve data from the backend."
+                    )}
+                </p>
+
+                <hr>
+
+                <p class="mb-3">
+
+                    Backend:
+
+                    <br>
+
+                    <strong>
+                        http://127.0.0.1:5000
+                    </strong>
+
+                </p>
+
+                <button
+                    type="button"
+                    class="btn btn-danger"
+                    onclick="loadOutpassRequests()"
+                >
+                    Try Again
+                </button>
+
+            </div>
+
+        `;
+
+    }
+    finally {
+
+        refreshButton.disabled =
+            false;
+
+        refreshButton.innerText =
+            "↻ Refresh";
+
+    }
+
+}
+
+
+/* =====================================================
+   DISPLAY REQUESTS
+===================================================== */
+
+function displayRequests(
+    requests
+) {
+
+    requestsContainer.innerHTML =
+        "";
+
+
+    /* =================================================
+       SUMMARY
+    ================================================= */
+
+    const total =
+        requests.length;
+
+
+    const pending =
+        requests.filter(
+            function(request) {
+
+                const status =
+                    getOverallStatus(
+                        request
+                    ).toLowerCase();
+
+
+                return (
+                    status.includes("waiting") ||
+                    status.includes("pending")
+                );
+
+            }
+        ).length;
+
+
+    const approved =
+        requests.filter(
+            function(request) {
+
+                return isPassApproved(
+                    request
+                );
+
+            }
+        ).length;
+
+
+    const completed =
+        requests.filter(
+            function(request) {
+
+                const security =
+                    String(
+                        request.security_status ||
+                        ""
+                    ).toLowerCase();
+
+
+                return (
+                    security.includes("returned") ||
+                    security.includes("completed")
+                );
+
+            }
+        ).length;
+
+
+    totalCount.textContent =
+        total;
+
+    pendingCount.textContent =
+        pending;
+
+    approvedCount.textContent =
+        approved;
+
+    completedCount.textContent =
+        completed;
+
+
+    /* =================================================
+       EMPTY
+    ================================================= */
+
+    if (
+        !Array.isArray(requests) ||
+        requests.length === 0
+    ) {
+
+        requestsContainer.innerHTML = `
+
+            <div class="empty-state">
+
+                <div style="font-size:55px;">
+                    📋
+                </div>
+
+                <h5>
+                    No Outpass Requests
+                </h5>
+
+                <p>
+                    You have not submitted any outpass requests yet.
+                </p>
+
+                <a
+                    href="apply-outpass.html"
+                    class="btn btn-primary"
+                >
+                    Apply for Outpass
+                </a>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* =================================================
+       SORT NEWEST FIRST
+    ================================================= */
+
+    const sortedRequests =
+        [...requests].sort(
+            function(a, b) {
+
+                const dateA =
+                    new Date(
+                        String(
+                            a.submitted_at ||
+                            a.outpass_date ||
+                            ""
+                        ).replace(
+                            " ",
+                            "T"
+                        )
+                    ).getTime();
+
+
+                const dateB =
+                    new Date(
+                        String(
+                            b.submitted_at ||
+                            b.outpass_date ||
+                            ""
+                        ).replace(
+                            " ",
+                            "T"
+                        )
+                    ).getTime();
+
+
+                return (
+                    (isNaN(dateB) ? 0 : dateB) -
+                    (isNaN(dateA) ? 0 : dateA)
+                );
+
+            }
+        );
+
+
+    /* =================================================
+       SELECTED OUTPASS FROM URL
+    ================================================= */
+
+    const urlParams =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const selectedOutpassId =
+        urlParams.get(
+            "outpass_id"
+        );
+
+
+    /* =================================================
+       CREATE CARDS
+    ================================================= */
+
+    sortedRequests.forEach(
+        function(request) {
+
+            const outpassId =
+                String(
+                    request.outpass_id ||
+                    ""
+                ).trim();
+
+
+            if (!outpassId) {
+                return;
+            }
+
+
+            const elementKey =
+                safeElementKey(
+                    outpassId
+                );
+
+
+            const overallStatus =
+                getOverallStatus(
+                    request
+                );
+
+
+            const parentStatus =
+                request.parent_status ||
+                "Pending";
+
+
+            const mentorStatus =
+                request.mentor_status ||
+                "Pending";
+
+
+            const securityStatus =
+                request.security_status ||
+                "Not Exited";
+
+
+            const passApproved =
+                isPassApproved(
+                    request
+                );
+
+
+            const rejected =
+                isRejected(
+                    request
+                );
+
+
+            const selectedClass =
+                selectedOutpassId ===
+                outpassId
+                    ? "selected-card"
+                    : "";
+
+
+            let approvalSection =
+                "";
+
+
+            /* =================================================
+               PARENT PENDING
+            ================================================= */
+
+            if (
+                String(
+                    parentStatus
+                )
+                .toLowerCase()
+                .trim() === "pending"
+            ) {
+
+                approvalSection = `
+
+                    <div class="otp-section">
+
+                        <div class="otp-title">
+                            🔐 Parent Approval Required
+                        </div>
+
+                        <div class="otp-text">
+
+                            The approval OTP has been sent
+                            to your parent's
+                            <strong>registered email address</strong>.
+
+                            <br><br>
+
+                            Ask your parent for the OTP
+                            and enter it below.
+
+                        </div>
+
+                        <div class="row g-2">
+
+                            <div class="col-md-5">
+
+                                <input
+                                    type="text"
+                                    class="form-control otp-input"
+                                    maxlength="6"
+                                    minlength="6"
+                                    inputmode="numeric"
+                                    autocomplete="one-time-code"
+                                    placeholder="Enter 6-digit OTP"
+                                    id="otp-${elementKey}"
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-warning"
+                                    id="verify-btn-${elementKey}"
+                                    onclick='verifyOTP(${JSON.stringify(outpassId)})'
+                                >
+                                    Verify OTP
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="otp-message-${elementKey}"
+                            class="alert mt-3 mb-0"
+                            style="display:none;"
+                        ></div>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            /* =================================================
+               PARENT APPROVED
+            ================================================= */
+
+            else if (
+                String(
+                    parentStatus
+                )
+                .toLowerCase()
+                .trim() === "approved"
+            ) {
+
+                /* MENTOR APPROVED */
+
+                if (
+                    String(
+                        mentorStatus
+                    )
+                    .toLowerCase()
+                    .trim() === "approved"
+                ) {
+
+                    approvalSection = `
+
+                        <div class="pass-section">
+
+                            <div class="pass-title">
+                                ✓ Outpass Fully Approved
+                            </div>
+
+                            <div class="pass-text">
+
+                                Parent and mentor approval
+                                have been completed.
+
+                                <br>
+
+                                Your digital outpass is ready.
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="btn btn-success"
+                                onclick='openDigitalPass(${JSON.stringify(outpassId)})'
+                            >
+                                🎫 View Digital Pass
+                            </button>
+
+                        </div>
+
+                    `;
+
+                }
+
+                /* MENTOR REJECTED */
+
+                else if (
+                    String(
+                        mentorStatus
+                    )
+                    .toLowerCase()
+                    .includes("reject")
+                ) {
+
+                    approvalSection = `
+
+                        <div class="alert alert-danger mt-4 mb-0">
+
+                            <strong>
+                                ✕ Mentor rejected this outpass.
+                            </strong>
+
+                            ${
+                                request.mentor_rejection_reason
+                                ? `
+                                    <br><br>
+
+                                    <small>
+
+                                        <strong>
+                                            Rejection Reason:
+                                        </strong>
+
+                                        ${escapeHTML(
+                                            request.mentor_rejection_reason
+                                        )}
+
+                                    </small>
+                                `
+                                : ""
+                            }
+
+                        </div>
+
+                    `;
+
+                }
+
+                /* MENTOR PENDING */
+
+                else {
+
+                    approvalSection = `
+
+                        <div class="alert alert-info mt-4 mb-0">
+
+                            <strong>
+                                ✓ Parent approval completed.
+                            </strong>
+
+                            <br>
+
+                            <small>
+                                Your request is now waiting
+                                for mentor approval.
+                            </small>
+
+                        </div>
+
+                    `;
+
+                }
+
+            }
+
+
+            /* =================================================
+               PARENT REJECTED
+            ================================================= */
+
+            else if (
+                String(
+                    parentStatus
+                )
+                .toLowerCase()
+                .includes("reject")
+            ) {
+
+                approvalSection = `
+
+                    <div class="alert alert-danger mt-4 mb-0">
+
+                        <strong>
+                            ✕ Parent rejected this outpass.
+                        </strong>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            /* =================================================
+               SECURITY
+            ================================================= */
+
+            let securitySection =
+                "";
+
+
+            if (passApproved) {
+
+                securitySection = `
+
+                    <div class="security-section">
+
+                        <div class="row g-3">
+
+                            <div class="col-md-4">
+
+                                <div class="detail-label">
+                                    Security Status
+                                </div>
+
+                                <span class="status-badge
+                                    ${getStatusClass(
+                                        securityStatus
+                                    )}"
+                                >
+
+                                    ${escapeHTML(
+                                        securityStatus
+                                    )}
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <div class="detail-label">
+                                    Actual Exit
+                                </div>
+
+                                <div class="detail-value">
+
+                                    ${escapeHTML(
+                                        formatDateTime(
+                                            request.actual_exit_time
+                                        )
+                                    )}
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <div class="detail-label">
+                                    Actual Return
+                                </div>
+
+                                <div class="detail-value">
+
+                                    ${escapeHTML(
+                                        formatDateTime(
+                                            request.actual_return_time
+                                        )
+                                    )}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            /* =================================================
+               CARD
+            ================================================= */
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "outpass-card " +
+                selectedClass;
+
+
+            card.id =
+                "outpass-card-" +
+                elementKey;
+
+
+            card.innerHTML = `
+
+                <div
+                    class="d-flex
+                           justify-content-between
+                           align-items-center
+                           mb-3
+                           flex-wrap
+                           gap-2"
+                >
+
+                    <div class="outpass-id">
+
+                        Outpass ID:
+                        ${escapeHTML(
+                            outpassId
+                        )}
+
+                    </div>
+
+
+                    <span
+                        class="status-badge
+                        ${getStatusClass(
+                            overallStatus
+                        )}"
+                    >
+
+                        ${escapeHTML(
+                            overallStatus
+                        )}
+
+                    </span>
+
+                </div>
+
+
+                <hr>
+
+
+                <!-- DETAILS -->
+
+                <div class="row g-4">
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Destination
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHTML(
+                                request.destination ||
+                                "-"
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Outpass Date
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHTML(
+                                formatDate(
+                                    request.outpass_date
+                                )
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Expected Exit
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHTML(
+                                formatTime(
+                                    request.exit_time
+                                )
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Return Date
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHTML(
+                                formatDate(
+                                    request.return_date
+                                )
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-8">
+
+                        <div class="detail-label">
+                            Reason
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHTML(
+                                request.reason ||
+                                "-"
+                            )}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <hr>
+
+
+                <!-- APPROVAL STATUS -->
+
+                <h6 class="mb-3">
+                    Approval Status
+                </h6>
+
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Parent
+                        </div>
+
+                        <span
+                            class="status-badge
+                            ${getStatusClass(
+                                parentStatus
+                            )}"
+                        >
+
+                            ${escapeHTML(
+                                parentStatus
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Mentor
+                        </div>
+
+                        <span
+                            class="status-badge
+                            ${getStatusClass(
+                                mentorStatus
+                            )}"
+                        >
+
+                            ${escapeHTML(
+                                mentorStatus
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Security
+                        </div>
+
+                        <span
+                            class="status-badge
+                            ${getStatusClass(
+                                securityStatus
+                            )}"
+                        >
+
+                            ${escapeHTML(
+                                securityStatus
+                            )}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                ${securitySection}
+
+
+                ${approvalSection}
+
+
+                ${
+                    passApproved
+                    ? `
+                        <div class="mt-3">
+
+                            <button
+                                type="button"
+                                class="btn btn-outline-success btn-sm"
+                                onclick='openDigitalPass(${JSON.stringify(outpassId)})'
+                            >
+                                🎫 Open Digital Pass
+                            </button>
+
+                        </div>
+                    `
+                    : ""
+                }
+
+
+                ${
+                    rejected
+                    ? `
+                        <div class="alert alert-light border mt-3 mb-0">
+
+                            This request remains available
+                            in your history for reference.
+
+                        </div>
+                    `
+                    : ""
+                }
+
+            `;
+
+
+            requestsContainer.appendChild(
+                card
+            );
+
+        }
+    );
+
+
+    /* =================================================
+       SCROLL TO SELECTED REQUEST
+    ================================================= */
+
+    if (selectedOutpassId) {
+
+        setTimeout(
+            function() {
+
+                const selectedCard =
+                    document.getElementById(
+                        "outpass-card-" +
+                        safeElementKey(
+                            selectedOutpassId
+                        )
+                    );
+
+
+                if (selectedCard) {
+
+                    selectedCard.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                }
+
+            },
+            300
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   VERIFY PARENT OTP
+===================================================== */
+
+async function verifyOTP(
+    outpassId
+) {
+
+    const elementKey =
+        safeElementKey(
+            outpassId
+        );
+
+
+    const input =
+        document.getElementById(
+            "otp-" +
+            elementKey
+        );
+
+
+    const messageBox =
+        document.getElementById(
+            "otp-message-" +
+            elementKey
+        );
+
+
+    const button =
+        document.getElementById(
+            "verify-btn-" +
+            elementKey
+        );
+
+
+    if (
+        !input ||
+        !messageBox ||
+        !button
+    ) {
+
+        return;
+
+    }
+
+
+    const otp =
+        input.value.trim();
+
+
+    if (
+        !/^\d{6}$/.test(
+            otp
+        )
+    ) {
+
+        messageBox.className =
+            "alert alert-warning mt-3 mb-0";
+
+        messageBox.textContent =
+            "Please enter a valid 6-digit OTP.";
+
+        messageBox.style.display =
+            "block";
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    button.disabled =
+        true;
+
+    button.innerText =
+        "Verifying...";
+
+
+    messageBox.style.display =
+        "none";
+
+
+    try {
+
+        const result =
+            await apiRequest(
+
+                "/api/outpasses/" +
+                encodeURIComponent(
+                    outpassId
+                ) +
+                "/parent-approve",
+
+                {
+
+                    method: "POST",
+
+                    body:
+                        JSON.stringify({
+                            otp: otp
+                        })
+
+                }
+
+            );
+
+
+        if (
+            !result ||
+            result.success === false
+        ) {
+
+            throw new Error(
+                result?.message ||
+                result?.error ||
+                "OTP verification failed."
+            );
+
+        }
+
+
+        messageBox.className =
+            "alert alert-success mt-3 mb-0";
+
+        messageBox.textContent =
+            "✓ Parent approval completed successfully.";
+
+        messageBox.style.display =
+            "block";
+
+
+        button.innerText =
+            "Verified";
+
+
+        input.disabled =
+            true;
+
+
+        /*
+         * Reload directly from MySQL through Flask.
+         */
+
+        setTimeout(
+            function() {
+
+                loadOutpassRequests();
+
+            },
+            800
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "OTP verification error:",
+            error
+        );
+
+
+        messageBox.className =
+            "alert alert-danger mt-3 mb-0";
+
+        messageBox.textContent =
+            error.message ||
+            "Unable to verify OTP.";
+
+        messageBox.style.display =
+            "block";
+
+
+        input.value =
+            "";
+
+
+        input.focus();
+
+
+        button.disabled =
+            false;
+
+        button.innerText =
+            "Verify OTP";
+
+    }
+
+}
+
+
+/* =====================================================
+   OTP INPUT RESTRICTION
+===================================================== */
+
+document.addEventListener(
+    "input",
+    function(event) {
+
+        if (
+            event.target.classList.contains(
+                "otp-input"
+            )
+        ) {
+
+            event.target.value =
+                event.target.value
+                    .replace(
+                        /\D/g,
+                        ""
+                    )
+                    .slice(
+                        0,
+                        6
+                    );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   OTP ENTER KEY
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key !== "Enter" ||
+            !event.target.classList.contains(
+                "otp-input"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        const input =
+            event.target;
+
+
+        const id =
+            input.id;
+
+
+        if (
+            !id.startsWith(
+                "otp-"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        const elementKey =
+            id.substring(
+                4
+            );
+
+
+        const button =
+            document.getElementById(
+                "verify-btn-" +
+                elementKey
+            );
+
+
+        if (
+            button &&
+            !button.disabled
+        ) {
+
+            button.click();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   REFRESH
+===================================================== */
+
+refreshButton.addEventListener(
+    "click",
+    function() {
+
+        loadOutpassRequests();
+
+    }
+);
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+document
+    .getElementById(
+        "logoutLink"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            logoutUser();
+
+        }
+    );
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+if (
+    token &&
+    currentUser &&
+    (
+        !currentUser.role ||
+        String(
+            currentUser.role
+        ).toLowerCase() === "student"
+    )
+) {
+
+    loadOutpassRequests();
+
+}
+
+
+/* =====================================================
+   AUTO REFRESH
+===================================================== */
+
+setInterval(
+    function() {
+
+        if (
+            document.visibilityState ===
+            "visible"
+        ) {
+
+            loadOutpassRequests();
+
+        }
+
+    },
+    30000
+);
+
+</script>
+
+
+</body>
+
+</html>

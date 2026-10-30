@@ -1,0 +1,2128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Apply Outpass - Smart Digital Outpass</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            background-color: #f4f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar-custom {
+            background-color: #12355b;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: white !important;
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+
+        .page-container {
+            max-width: 950px;
+            margin: 40px auto;
+        }
+
+        .form-card {
+            background-color: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.10);
+        }
+
+        .page-title {
+            color: #12355b;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .page-subtitle {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: #12355b;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e8edf3;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .student-info-box {
+            background-color: #f4f7fb;
+            border: 1px solid #dce5ef;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .info-label {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 3px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .parent-box {
+            background-color: #f8fafc;
+            border: 1px solid #dce5ef;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .registered-badge {
+            display: inline-block;
+            background-color: #d1e7dd;
+            color: #0f5132;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .email-badge {
+            display: inline-block;
+            background-color: #0d6efd;
+            color: white;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .privacy-note {
+            font-size: 13px;
+            color: #666;
+            margin-top: 12px;
+        }
+
+        .otp-box {
+            background-color: #eef5ff;
+            border: 1px solid #cfe2ff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+        .otp-title {
+            color: #12355b;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .otp-description {
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .otp-input {
+            max-width: 300px;
+            font-size: 22px;
+            letter-spacing: 6px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .otp-help {
+            color: #666;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .submit-btn {
+            padding: 12px 30px;
+            font-weight: bold;
+        }
+
+        #successMessage,
+        #otpVerificationSection,
+        #errorMessage,
+        #approvalSuccessMessage {
+            display: none;
+        }
+
+        .server-status {
+            font-size: 13px;
+            color: #777;
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffecb5;
+            color: #664d03;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+
+            .page-container {
+                margin: 20px 10px;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .otp-input {
+                max-width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<nav class="navbar navbar-custom">
+
+    <div class="container-fluid">
+
+        <a
+            class="navbar-brand"
+            href="dashboard.html"
+        >
+            SMART OUTPASS
+        </a>
+
+        <div>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="dashboard.html"
+            >
+                Dashboard
+            </a>
+
+            <a
+                class="nav-link d-inline-block"
+                href="../index.html"
+                id="logoutLink"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+====================================================== -->
+
+<div class="container page-container">
+
+    <div class="form-card">
+
+        <h2 class="page-title">
+            Apply for Outpass
+        </h2>
+
+        <p class="page-subtitle">
+            Submit your outpass request for approval.
+        </p>
+
+
+        <!-- =================================================
+             STUDENT DETAILS
+        ================================================== -->
+
+        <div class="section-title">
+            Student Details
+        </div>
+
+        <div class="student-info-box">
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <div class="info-label">
+                        Student Name
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="studentName"
+                    >
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6 mb-3">
+
+                    <div class="info-label">
+                        Roll Number
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="studentRollNumber"
+                    >
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Department
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="studentDepartment"
+                    >
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Year
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="studentYear"
+                    >
+                        Loading...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             OUTPASS DETAILS
+        ================================================== -->
+
+        <div class="section-title">
+            Outpass Details
+        </div>
+
+
+        <form id="outpassForm">
+
+            <div class="row">
+
+                <!-- DESTINATION -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label
+                        for="destination"
+                        class="form-label"
+                    >
+                        Destination
+                    </label>
+
+                    <input
+                        type="text"
+                        id="destination"
+                        class="form-control"
+                        placeholder="Enter destination"
+                        maxlength="150"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- OUTPASS DATE -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label
+                        for="outpassDate"
+                        class="form-label"
+                    >
+                        Outpass Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="outpassDate"
+                        class="form-control"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EXIT TIME -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label
+                        for="exitTime"
+                        class="form-label"
+                    >
+                        Expected Exit Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="exitTime"
+                        class="form-control"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- RETURN DATE -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label
+                        for="returnDate"
+                        class="form-label"
+                    >
+                        Return Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="returnDate"
+                        class="form-control"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- REASON -->
+
+                <div class="col-12 mb-3">
+
+                    <label
+                        for="reason"
+                        class="form-label"
+                    >
+                        Reason for Outpass
+                    </label>
+
+                    <textarea
+                        id="reason"
+                        class="form-control"
+                        rows="4"
+                        placeholder="Clearly explain the reason for requesting the outpass"
+                        maxlength="500"
+                        required
+                    ></textarea>
+
+                    <div class="form-text">
+                        Maximum 500 characters.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 REGISTERED PARENT
+            ================================================== -->
+
+            <div class="section-title">
+                Registered Parent / Guardian
+            </div>
+
+
+            <div class="parent-box">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <div class="info-label">
+                            Parent / Guardian
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="parentName"
+                        >
+                            Registered Parent
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <div class="info-label">
+                            Contact Information
+                        </div>
+
+                        <span class="registered-badge">
+                            ✓ Registered with College
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-2">
+
+                    <span class="email-badge">
+                        ✉ OTP BY EMAIL
+                    </span>
+
+                </div>
+
+
+                <p class="privacy-note mb-0">
+
+                    The registered parent / guardian will receive
+                    the approval OTP by email. The student's parent
+                    contact information is maintained by the college
+                    and cannot be modified by the student.
+
+                    SMS notifications are planned for a future
+                    enhancement.
+
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 DECLARATION
+            ================================================== -->
+
+            <div class="form-check mt-4 mb-4">
+
+                <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="declaration"
+                    required
+                >
+
+                <label
+                    class="form-check-label"
+                    for="declaration"
+                >
+                    I confirm that the information provided in this
+                    outpass request is correct and I agree to follow
+                    the college outpass rules.
+                </label>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="d-flex gap-2 flex-wrap">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary submit-btn"
+                    id="submitButton"
+                >
+                    Submit Outpass Request
+                </button>
+
+
+                <a
+                    href="dashboard.html"
+                    class="btn btn-secondary submit-btn"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+
+        <!-- =================================================
+             SUCCESS MESSAGE
+        ================================================== -->
+
+        <div
+            id="successMessage"
+            class="alert alert-success mt-4"
+        >
+
+            <h5>
+                ✓ Outpass Request Submitted
+            </h5>
+
+            <p class="mb-1">
+                Your outpass request has been submitted successfully.
+            </p>
+
+            <p class="mb-1">
+
+                <strong>Outpass ID:</strong>
+
+                <span id="successOutpassId"></span>
+
+            </p>
+
+            <p class="mb-0" id="submissionEmailStatus">
+                Parent OTP email status is being checked.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             EMAIL WARNING
+        ================================================== -->
+
+        <div
+            id="emailWarningMessage"
+            class="warning-box"
+            style="display:none;"
+        >
+
+            <strong>
+                Outpass created, but email delivery needs attention.
+            </strong>
+
+            <div
+                id="emailWarningText"
+                class="mt-2"
+            ></div>
+
+            <button
+                type="button"
+                class="btn btn-outline-primary btn-sm mt-3"
+                id="resendOtpButton"
+            >
+                Resend Parent OTP
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             PARENT OTP VERIFICATION
+        ================================================== -->
+
+        <div
+            id="otpVerificationSection"
+            class="otp-box"
+        >
+
+            <div class="otp-title">
+                🔐 Parent Approval Verification
+            </div>
+
+
+            <p class="otp-description">
+
+                An approval OTP has been sent to your parent's
+                registered email address.
+
+                <br>
+
+                <strong>
+                    Ask your parent for the OTP they received,
+                    then enter it below.
+                </strong>
+
+            </p>
+
+
+            <div class="mt-3 mb-3">
+
+                <span class="email-badge">
+                    ✉ OTP SENT BY EMAIL
+                </span>
+
+            </div>
+
+
+            <label
+                for="parentOtp"
+                class="form-label"
+            >
+                Enter OTP received by your parent
+            </label>
+
+
+            <input
+                type="text"
+                id="parentOtp"
+                class="form-control otp-input"
+                maxlength="6"
+                minlength="6"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                placeholder="000000"
+            >
+
+
+            <div class="otp-help">
+                Enter the 6-digit OTP exactly as received by your parent.
+            </div>
+
+
+            <div class="mt-4">
+
+                <button
+                    type="button"
+                    class="btn btn-success submit-btn"
+                    id="verifyOtpButton"
+                >
+                    ✓ Verify Parent OTP
+                </button>
+
+            </div>
+
+
+            <div
+                id="otpMessage"
+                class="mt-3"
+            ></div>
+
+        </div>
+
+
+        <!-- =================================================
+             FINAL APPROVAL MESSAGE
+        ================================================== -->
+
+        <div
+            id="approvalSuccessMessage"
+            class="alert alert-success mt-4"
+        >
+
+            <h5>
+                ✓ Parent Approval Completed
+            </h5>
+
+            <p class="mb-1">
+
+                Your parent has successfully approved this
+                outpass request.
+
+            </p>
+
+            <p class="mb-1">
+
+                <strong>Outpass ID:</strong>
+
+                <span id="approvedOutpassId"></span>
+
+            </p>
+
+            <p class="mb-0">
+
+                Your request is now waiting for
+                <strong>Mentor Approval</strong>.
+
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             ERROR MESSAGE
+        ================================================== -->
+
+        <div
+            id="errorMessage"
+            class="alert alert-danger mt-4"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+<script>
+
+"use strict";
+
+
+/* =====================================================
+   FLASK API
+===================================================== */
+
+const API_URL =
+    "http://127.0.0.1:5000";
+
+
+/* =====================================================
+   AUTHENTICATION
+===================================================== */
+
+const token =
+    localStorage.getItem(
+        "smart_outpass_token"
+    );
+
+const storedUser =
+    localStorage.getItem(
+        "smart_outpass_user"
+    );
+
+
+let currentUser = null;
+
+
+try {
+
+    if (storedUser) {
+
+        currentUser =
+            JSON.parse(storedUser);
+
+    }
+
+} catch (error) {
+
+    console.error(
+        "Invalid stored user:",
+        error
+    );
+
+}
+
+
+/* =====================================================
+   LOGIN CHECK
+===================================================== */
+
+if (!token || !currentUser) {
+
+    window.location.href =
+        "../index.html";
+
+}
+
+
+/* =====================================================
+   ROLE CHECK
+===================================================== */
+
+if (
+    currentUser &&
+    currentUser.role &&
+    String(currentUser.role).toLowerCase() !== "student"
+) {
+
+    alert(
+        "Only student accounts can apply for an outpass."
+    );
+
+    window.location.href =
+        "../index.html";
+
+}
+
+
+/* =====================================================
+   STUDENT INFORMATION
+===================================================== */
+
+const studentName =
+    currentUser?.name ||
+    currentUser?.student_name ||
+    "Student";
+
+
+const studentRollNumber =
+    currentUser?.roll_number ||
+    currentUser?.student_roll_number ||
+    currentUser?.username ||
+    "";
+
+
+const studentDepartment =
+    currentUser?.department ||
+    "--";
+
+
+const studentYear =
+    currentUser?.year ||
+    "--";
+
+
+/* =====================================================
+   DISPLAY STUDENT INFORMATION
+===================================================== */
+
+document.getElementById(
+    "studentName"
+).textContent =
+    studentName;
+
+
+document.getElementById(
+    "studentRollNumber"
+).textContent =
+    studentRollNumber || "--";
+
+
+document.getElementById(
+    "studentDepartment"
+).textContent =
+    studentDepartment;
+
+
+document.getElementById(
+    "studentYear"
+).textContent =
+    studentYear;
+
+
+/* =====================================================
+   DOM ELEMENTS
+===================================================== */
+
+const form =
+    document.getElementById(
+        "outpassForm"
+    );
+
+
+const successMessage =
+    document.getElementById(
+        "successMessage"
+    );
+
+
+const successOutpassId =
+    document.getElementById(
+        "successOutpassId"
+    );
+
+
+const submissionEmailStatus =
+    document.getElementById(
+        "submissionEmailStatus"
+    );
+
+
+const errorMessage =
+    document.getElementById(
+        "errorMessage"
+    );
+
+
+const emailWarningMessage =
+    document.getElementById(
+        "emailWarningMessage"
+    );
+
+
+const emailWarningText =
+    document.getElementById(
+        "emailWarningText"
+    );
+
+
+const submitButton =
+    document.getElementById(
+        "submitButton"
+    );
+
+
+const dateInput =
+    document.getElementById(
+        "outpassDate"
+    );
+
+
+const returnDateInput =
+    document.getElementById(
+        "returnDate"
+    );
+
+
+const exitTimeInput =
+    document.getElementById(
+        "exitTime"
+    );
+
+
+const otpVerificationSection =
+    document.getElementById(
+        "otpVerificationSection"
+    );
+
+
+const parentOtp =
+    document.getElementById(
+        "parentOtp"
+    );
+
+
+const verifyOtpButton =
+    document.getElementById(
+        "verifyOtpButton"
+    );
+
+
+const resendOtpButton =
+    document.getElementById(
+        "resendOtpButton"
+    );
+
+
+const otpMessage =
+    document.getElementById(
+        "otpMessage"
+    );
+
+
+const approvalSuccessMessage =
+    document.getElementById(
+        "approvalSuccessMessage"
+    );
+
+
+const approvedOutpassId =
+    document.getElementById(
+        "approvedOutpassId"
+    );
+
+
+const destinationInput =
+    document.getElementById(
+        "destination"
+    );
+
+
+const reasonInput =
+    document.getElementById(
+        "reason"
+    );
+
+
+const declarationInput =
+    document.getElementById(
+        "declaration"
+    );
+
+
+/* =====================================================
+   CURRENT OUTPASS
+===================================================== */
+
+let currentOutpassId = "";
+
+
+/* =====================================================
+   SUBMISSION LOCK
+===================================================== */
+
+let submissionInProgress = false;
+
+
+/* =====================================================
+   TODAY
+===================================================== */
+
+function getLocalDateString() {
+
+    const now =
+        new Date();
+
+    const year =
+        now.getFullYear();
+
+    const month =
+        String(
+            now.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            now.getDate()
+        ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+
+}
+
+
+const today =
+    getLocalDateString();
+
+
+dateInput.min =
+    today;
+
+returnDateInput.min =
+    today;
+
+
+/* =====================================================
+   DATE CHANGE
+===================================================== */
+
+dateInput.addEventListener(
+    "change",
+    function () {
+
+        if (!dateInput.value) {
+            return;
+        }
+
+        returnDateInput.min =
+            dateInput.value;
+
+
+        if (
+            returnDateInput.value &&
+            returnDateInput.value <
+                dateInput.value
+        ) {
+
+            returnDateInput.value =
+                "";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   RETURN DATE CHANGE
+===================================================== */
+
+returnDateInput.addEventListener(
+    "change",
+    function () {
+
+        if (
+            dateInput.value &&
+            returnDateInput.value <
+                dateInput.value
+        ) {
+
+            showError(
+                "Return date cannot be earlier than the outpass date."
+            );
+
+            returnDateInput.value =
+                "";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   OTP INPUT
+===================================================== */
+
+parentOtp.addEventListener(
+    "input",
+    function () {
+
+        this.value =
+            this.value
+                .replace(/\D/g, "")
+                .slice(0, 6);
+
+    }
+);
+
+
+/* =====================================================
+   API REQUEST HELPER
+===================================================== */
+
+async function apiRequest(
+    endpoint,
+    options = {}
+) {
+
+    const headers = {
+
+        "Content-Type":
+            "application/json",
+
+        "Accept":
+            "application/json",
+
+        ...(options.headers || {})
+
+    };
+
+
+    if (token) {
+
+        headers["Authorization"] =
+            `Bearer ${token}`;
+
+    }
+
+
+    let response;
+
+
+    try {
+
+        response =
+            await fetch(
+                `${API_URL}${endpoint}`,
+                {
+                    ...options,
+                    headers
+                }
+            );
+
+    } catch (error) {
+
+        throw new Error(
+            "Cannot connect to the Flask server. Make sure app.py is running on http://127.0.0.1:5000."
+        );
+
+    }
+
+
+    let result = null;
+
+
+    try {
+
+        result =
+            await response.json();
+
+    } catch (error) {
+
+        result = null;
+
+    }
+
+
+    /* =================================================
+       SESSION EXPIRED
+    ================================================= */
+
+    if (
+        response.status === 401 ||
+        response.status === 403
+    ) {
+
+        localStorage.removeItem(
+            "smart_outpass_token"
+        );
+
+        localStorage.removeItem(
+            "smart_outpass_user"
+        );
+
+
+        window.location.href =
+            "../index.html";
+
+
+        throw new Error(
+            "Your session has expired. Please login again."
+        );
+
+    }
+
+
+    return {
+        response,
+        result
+    };
+
+}
+
+
+/* =====================================================
+   SAVE OUTPASS ID
+===================================================== */
+
+function saveSelectedOutpass(
+    outpassId
+) {
+
+    if (!outpassId) {
+        return;
+    }
+
+
+    localStorage.setItem(
+        "smart_outpass_selected_outpass_id",
+        outpassId
+    );
+
+    localStorage.setItem(
+        "smart_outpass_selected_id",
+        outpassId
+    );
+
+    localStorage.setItem(
+        "selectedOutpassId",
+        outpassId
+    );
+
+}
+
+
+/* =====================================================
+   LOCK FORM
+===================================================== */
+
+function lockOutpassForm() {
+
+    destinationInput.disabled =
+        true;
+
+    dateInput.disabled =
+        true;
+
+    exitTimeInput.disabled =
+        true;
+
+    returnDateInput.disabled =
+        true;
+
+    reasonInput.disabled =
+        true;
+
+    declarationInput.disabled =
+        true;
+
+    submitButton.disabled =
+        true;
+
+    submitButton.innerText =
+        "Request Submitted";
+
+}
+
+
+/* =====================================================
+   SHOW GENERAL ERROR
+===================================================== */
+
+function showError(
+    message
+) {
+
+    errorMessage.textContent =
+        message;
+
+    errorMessage.style.display =
+        "block";
+
+
+    errorMessage.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+}
+
+
+/* =====================================================
+   CLEAR GENERAL ERROR
+===================================================== */
+
+function clearError() {
+
+    errorMessage.textContent =
+        "";
+
+    errorMessage.style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   SHOW OTP MESSAGE
+===================================================== */
+
+function showOtpMessage(
+    message,
+    type
+) {
+
+    otpMessage.innerHTML =
+        "";
+
+
+    const alert =
+        document.createElement(
+            "div"
+        );
+
+
+    alert.className =
+        `alert alert-${type} mb-0`;
+
+
+    alert.textContent =
+        message;
+
+
+    otpMessage.appendChild(
+        alert
+    );
+
+}
+
+
+/* =====================================================
+   FORM SUBMISSION
+===================================================== */
+
+form.addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+
+        if (submissionInProgress) {
+            return;
+        }
+
+
+        clearError();
+
+
+        successMessage.style.display =
+            "none";
+
+        emailWarningMessage.style.display =
+            "none";
+
+        approvalSuccessMessage.style.display =
+            "none";
+
+
+        /* =================================================
+           GET VALUES
+        ================================================= */
+
+        const destination =
+            destinationInput.value.trim();
+
+
+        const outpassDate =
+            dateInput.value;
+
+
+        const exitTime =
+            exitTimeInput.value;
+
+
+        const returnDate =
+            returnDateInput.value;
+
+
+        const reason =
+            reasonInput.value.trim();
+
+
+        const declaration =
+            declarationInput.checked;
+
+
+        /* =================================================
+           CLIENT VALIDATION
+        ================================================= */
+
+        if (
+            !destination ||
+            !outpassDate ||
+            !exitTime ||
+            !returnDate ||
+            !reason
+        ) {
+
+            showError(
+                "Please complete all required fields."
+            );
+
+            return;
+
+        }
+
+
+        if (!studentRollNumber) {
+
+            showError(
+                "Your student roll number is missing from the login session. Please login again."
+            );
+
+            return;
+
+        }
+
+
+        if (!declaration) {
+
+            showError(
+                "Please confirm the declaration before submitting."
+            );
+
+            return;
+
+        }
+
+
+        if (destination.length > 150) {
+
+            showError(
+                "Destination cannot exceed 150 characters."
+            );
+
+            return;
+
+        }
+
+
+        if (reason.length > 500) {
+
+            showError(
+                "Reason cannot exceed 500 characters."
+            );
+
+            return;
+
+        }
+
+
+        if (outpassDate < today) {
+
+            showError(
+                "Outpass date cannot be earlier than today."
+            );
+
+            return;
+
+        }
+
+
+        if (returnDate < outpassDate) {
+
+            showError(
+                "Return date cannot be earlier than the outpass date."
+            );
+
+            return;
+
+        }
+
+
+        /* =================================================
+           LOCK SUBMISSION
+        ================================================= */
+
+        submissionInProgress =
+            true;
+
+
+        submitButton.disabled =
+            true;
+
+        submitButton.innerText =
+            "Submitting...";
+
+
+        try {
+
+            /*
+             * The backend gets the student's identity
+             * from the authentication token.
+             *
+             * Therefore we intentionally do NOT send:
+             *
+             * student_name
+             * roll_number
+             * department
+             * year
+             *
+             * from the browser.
+             *
+             * Flask gets those values from MySQL.
+             */
+
+            const {
+                response,
+                result
+            } =
+                await apiRequest(
+                    "/api/outpasses",
+                    {
+
+                        method: "POST",
+
+                        body:
+                            JSON.stringify({
+
+                                destination:
+                                    destination,
+
+                                outpass_date:
+                                    outpassDate,
+
+                                exit_time:
+                                    exitTime,
+
+                                return_date:
+                                    returnDate,
+
+                                reason:
+                                    reason
+
+                            })
+
+                    }
+                );
+
+
+            /* =================================================
+               SERVER RESPONSE
+            ================================================= */
+
+            const returnedOutpassId =
+                result?.outpass_id ||
+                result?.outpassId ||
+                result?.id ||
+                "";
+
+
+            /* =================================================
+               IMPORTANT 503 CASE
+
+               The backend can create the outpass first and
+               then report an email-delivery failure.
+
+               Do NOT automatically submit again because that
+               could create a second outpass.
+            ================================================= */
+
+            if (
+                response.status === 503 &&
+                returnedOutpassId
+            ) {
+
+                currentOutpassId =
+                    returnedOutpassId;
+
+
+                saveSelectedOutpass(
+                    currentOutpassId
+                );
+
+
+                successOutpassId.textContent =
+                    currentOutpassId;
+
+
+                successMessage.style.display =
+                    "block";
+
+                submissionEmailStatus.textContent =
+                    "Parent OTP email was not sent. Use Resend Parent OTP after email delivery is fixed.";
+
+
+                emailWarningText.textContent = [
+                    result?.message ||
+                        "The outpass was created, but the parent OTP email could not be delivered.",
+                    result?.email_error
+                ].filter(Boolean).join(" ");
+
+
+                emailWarningMessage.style.display =
+                    "block";
+
+
+                lockOutpassForm();
+
+
+                submissionInProgress =
+                    false;
+
+
+                return;
+
+            }
+
+
+            /* =================================================
+               OTHER SERVER ERRORS
+            ================================================= */
+
+            if (!response.ok) {
+
+                throw new Error(
+
+                    result?.message ||
+                    result?.error ||
+                    `Server error (${response.status}).`
+
+                );
+
+            }
+
+
+            if (
+                !result ||
+                result.success === false
+            ) {
+
+                throw new Error(
+
+                    result?.message ||
+                    result?.error ||
+                    "Failed to submit the outpass request."
+
+                );
+
+            }
+
+
+            /* =================================================
+               OUTPASS ID
+            ================================================= */
+
+            currentOutpassId =
+                returnedOutpassId;
+
+
+            if (!currentOutpassId) {
+
+                throw new Error(
+                    "The request was submitted, but the server did not return an Outpass ID."
+                );
+
+            }
+
+
+            /* =================================================
+               SAVE SELECTED OUTPASS
+            ================================================= */
+
+            saveSelectedOutpass(
+                currentOutpassId
+            );
+
+
+            /* =================================================
+               SUCCESS
+            ================================================= */
+
+            successOutpassId.textContent =
+                currentOutpassId;
+
+
+            successMessage.style.display =
+                "block";
+
+            submissionEmailStatus.textContent =
+                "Parent OTP email was sent to the registered parent address.";
+
+
+            /* =================================================
+               SHOW OTP SECTION
+            ================================================= */
+
+            otpVerificationSection.style.display =
+                "block";
+
+
+            /* =================================================
+               LOCK ORIGINAL FORM
+            ================================================= */
+
+            lockOutpassForm();
+
+
+            submissionInProgress =
+                false;
+
+
+            /* =================================================
+               SCROLL
+            ================================================= */
+
+            otpVerificationSection.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Submission error:",
+                error
+            );
+
+
+            showError(
+                error.message ||
+                "Unable to submit the outpass request."
+            );
+
+
+            submissionInProgress =
+                false;
+
+
+            submitButton.disabled =
+                false;
+
+            submitButton.innerText =
+                "Submit Outpass Request";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   VERIFY PARENT OTP
+===================================================== */
+
+resendOtpButton.addEventListener(
+    "click",
+    async function () {
+        if (!currentOutpassId) {
+            return;
+        }
+
+        resendOtpButton.disabled = true;
+        resendOtpButton.textContent = "Sending...";
+        emailWarningText.textContent = "";
+
+        try {
+            const { response, result } = await apiRequest(
+                `/api/outpasses/${encodeURIComponent(currentOutpassId)}/parent-otp/resend`,
+                { method: "POST" }
+            );
+
+            if (!response.ok || !result?.success) {
+                throw new Error([
+                    result?.message || "The parent OTP could not be resent.",
+                    result?.email_error
+                ].filter(Boolean).join(" "));
+            }
+
+            submissionEmailStatus.textContent =
+                "A new parent OTP email was sent to the registered parent address.";
+            emailWarningMessage.style.display = "none";
+            otpVerificationSection.style.display = "block";
+            otpVerificationSection.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        } catch (error) {
+            emailWarningText.textContent = error.message || "The parent OTP could not be resent.";
+        } finally {
+            resendOtpButton.disabled = false;
+            resendOtpButton.textContent = "Resend Parent OTP";
+        }
+    }
+);
+
+verifyOtpButton.addEventListener(
+    "click",
+    verifyParentOtp
+);
+
+
+/* =====================================================
+   VERIFY OTP
+===================================================== */
+
+async function verifyParentOtp() {
+
+    if (!currentOutpassId) {
+
+        showOtpMessage(
+            "Outpass ID is missing. Please open My Outpasses and select the request.",
+            "danger"
+        );
+
+        return;
+
+    }
+
+
+    const otp =
+        parentOtp.value.trim();
+
+
+    if (!/^\d{6}$/.test(otp)) {
+
+        showOtpMessage(
+            "Please enter a valid 6-digit OTP.",
+            "warning"
+        );
+
+        return;
+
+    }
+
+
+    verifyOtpButton.disabled =
+        true;
+
+    verifyOtpButton.innerText =
+        "Verifying...";
+
+
+    otpMessage.innerHTML =
+        "";
+
+
+    try {
+
+        const {
+            response,
+            result
+        } =
+            await apiRequest(
+
+                `/api/outpasses/${encodeURIComponent(currentOutpassId)}/parent-approve`,
+
+                {
+
+                    method: "POST",
+
+                    body:
+                        JSON.stringify({
+                            otp: otp
+                        })
+
+                }
+
+            );
+
+
+        /* =================================================
+           SERVER ERROR
+        ================================================= */
+
+        if (!response.ok) {
+
+            throw new Error(
+
+                result?.message ||
+                result?.error ||
+                `OTP verification failed (${response.status}).`
+
+            );
+
+        }
+
+
+        if (
+            !result ||
+            result.success === false
+        ) {
+
+            throw new Error(
+
+                result?.message ||
+                result?.error ||
+                "OTP verification failed."
+
+            );
+
+        }
+
+
+        /* =================================================
+           OTP SUCCESS
+        ================================================= */
+
+        showOtpMessage(
+            "✓ Parent OTP verified successfully.",
+            "success"
+        );
+
+
+        approvedOutpassId.textContent =
+            currentOutpassId;
+
+
+        approvalSuccessMessage.style.display =
+            "block";
+
+
+        otpVerificationSection.style.display =
+            "none";
+
+
+        successMessage.style.display =
+            "none";
+
+
+        /* =================================================
+           SCROLL TO SUCCESS
+        ================================================= */
+
+        approvalSuccessMessage.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+
+        /* =================================================
+           REDIRECT TO MY OUTPASSES
+        ================================================= */
+
+        setTimeout(
+            function () {
+
+                window.location.href =
+                    `my-outpasses.html?outpass_id=${encodeURIComponent(currentOutpassId)}`;
+
+            },
+            2500
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "OTP verification error:",
+            error
+        );
+
+
+        showOtpMessage(
+            error.message ||
+            "OTP verification failed.",
+            "danger"
+        );
+
+
+        verifyOtpButton.disabled =
+            false;
+
+        verifyOtpButton.innerText =
+            "✓ Verify Parent OTP";
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+document
+    .getElementById("logoutLink")
+    .addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+
+
+            localStorage.removeItem(
+                "smart_outpass_token"
+            );
+
+
+            localStorage.removeItem(
+                "smart_outpass_user"
+            );
+
+
+            localStorage.removeItem(
+                "smart_outpass_selected_outpass_id"
+            );
+
+
+            localStorage.removeItem(
+                "smart_outpass_selected_id"
+            );
+
+
+            localStorage.removeItem(
+                "selectedOutpassId"
+            );
+
+
+            window.location.href =
+                "../index.html";
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

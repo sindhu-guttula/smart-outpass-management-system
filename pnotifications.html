@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Notifications - Parent | Smart Outpass</title>
+
+
+    <!-- Bootstrap CSS -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <style>
+
+        /* ================= GENERAL ================= */
+
+        body {
+            background-color: #f4f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        .navbar-custom {
+            background-color: #12355b;
+        }
+
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+        }
+
+
+        .nav-link {
+            color: white !important;
+        }
+
+
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+
+
+        /* ================= MAIN CONTAINER ================= */
+
+        .page-container {
+            max-width: 1000px;
+            margin: 35px auto;
+        }
+
+
+        /* ================= PAGE HEADER ================= */
+
+        .page-header {
+            background-color: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+
+        .page-title {
+            color: #12355b;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+
+        .page-subtitle {
+            color: #777;
+            margin-bottom: 0;
+        }
+
+
+        /* ================= SMS INFO ================= */
+
+        .sms-info {
+            background-color: #eef5ff;
+            border: 1px solid #cfe2ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+
+        .sms-info-title {
+            color: #12355b;
+            font-weight: bold;
+        }
+
+
+        .sms-info-text {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+
+        .sms-badge {
+            display: inline-block;
+            background-color: #0d6efd;
+            color: white;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        /* ================= NOTIFICATION CARD ================= */
+
+        .notification-card {
+            background-color: white;
+            padding: 22px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+
+        .notification-type {
+            color: #12355b;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+
+        .notification-time {
+            color: #888;
+            font-size: 12px;
+        }
+
+
+        .notification-body {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 18px;
+            color: #444;
+            line-height: 1.7;
+        }
+
+
+        /* ================= OTP CARD ================= */
+
+        .otp-notification {
+            border-left: 5px solid #ffc107;
+        }
+
+
+        .otp-display {
+            background-color: #fff3cd;
+            border: 1px solid #ffe69c;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+
+        .otp-label {
+            color: #856404;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        .otp-number {
+            color: #12355b;
+            font-size: 30px;
+            font-weight: bold;
+            letter-spacing: 6px;
+            margin-top: 5px;
+        }
+
+
+        .security-note {
+            color: #856404;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+
+        /* ================= EXIT ================= */
+
+        .exit-notification {
+            border-left: 5px solid #0d6efd;
+        }
+
+
+        /* ================= RETURN ================= */
+
+        .return-notification {
+            border-left: 5px solid #198754;
+        }
+
+
+        /* ================= SMS STATUS ================= */
+
+        .sms-status {
+            display: inline-block;
+            background-color: #d1e7dd;
+            color: #0f5132;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+
+        /* ================= FILTER BUTTONS ================= */
+
+        .filter-btn {
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            .page-container {
+                margin: 20px 10px;
+            }
+
+
+            .notification-header {
+                display: block;
+            }
+
+
+            .notification-time {
+                display: block;
+                margin-top: 5px;
+            }
+
+
+            .otp-number {
+                font-size: 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-custom">
+
+    <div class="container-fluid">
+
+
+        <a
+            class="navbar-brand"
+            href="pdashboard.html"
+        >
+            SMART OUTPASS
+        </a>
+
+
+        <div>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="pdashboard.html"
+            >
+                Dashboard
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="outpass-requests.html"
+            >
+                Requests
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="pnotifications.html"
+            >
+                Notifications
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block"
+                href="../index.html"
+                onclick="logoutParent(event)"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="container page-container">
+
+
+    <!-- =================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <div class="page-header">
+
+        <h2 class="page-title">
+            Notifications
+        </h2>
+
+
+        <p class="page-subtitle">
+            View email notifications related to your ward's
+            outpass activity.
+        </p>
+
+    </div>
+
+
+
+    <!-- =================================================
+         SMS INFORMATION
+    ================================================== -->
+
+    <div class="sms-info">
+
+
+        <h5 class="sms-info-title">
+            Email Notification Service
+        </h5>
+
+
+        <p class="sms-info-text mt-2">
+
+            The parent's registered email address is
+            maintained by the college administrator.
+
+            Outpass notifications are sent to this
+            registered email address.
+
+        </p>
+
+
+        <p class="sms-info-text">
+
+            You will receive email notifications for:
+
+        </p>
+
+
+        <ul class="sms-info-text">
+
+            <li>
+                Outpass approval OTP
+            </li>
+
+            <li>
+                Student exit from campus
+            </li>
+
+            <li>
+                Student safe return to campus
+            </li>
+
+        </ul>
+
+
+        <span class="sms-badge">
+            Email delivery
+        </span>
+
+    </div>
+
+
+
+    <!-- =================================================
+         FILTER BUTTONS
+    ================================================== -->
+
+    <div class="mb-4">
+
+        <button
+            class="btn btn-primary filter-btn"
+            onclick="showNotifications('all')"
+        >
+            All
+        </button>
+
+
+        <button
+            class="btn btn-outline-warning filter-btn"
+            onclick="showNotifications('otp')"
+        >
+            🔐 OTP
+        </button>
+
+
+        <button
+            class="btn btn-outline-primary filter-btn"
+            onclick="showNotifications('exit')"
+        >
+            🚪 Exit
+        </button>
+
+
+        <button
+            class="btn btn-outline-success filter-btn"
+            onclick="showNotifications('return')"
+        >
+            🏫 Return
+        </button>
+
+    </div>
+
+
+
+    <!-- =================================================
+         NOTIFICATION 1 - OTP
+    ================================================== -->
+
+    <div
+        class="notification-card otp-notification notification-item"
+        data-type="otp"
+    >
+
+
+        <div class="notification-header">
+
+
+            <div class="notification-type">
+                🔐 Outpass Approval OTP
+            </div>
+
+
+            <div class="notification-time">
+                Today, 10:15 AM
+            </div>
+
+        </div>
+
+
+
+        <div class="notification-body">
+
+            <strong>
+                Smart Outpass System
+            </strong>
+
+            <br><br>
+
+            Your ward
+            <strong>Student Name</strong>
+            has requested an outpass.
+
+            <br><br>
+
+            <strong>
+                Outpass ID:
+            </strong>
+            OP001
+
+            <br>
+
+            <strong>
+                Destination:
+            </strong>
+            Rajahmundry
+
+            <br>
+
+            <strong>
+                Date:
+            </strong>
+            27 August 2026
+
+            <br>
+
+            <strong>
+                Time:
+            </strong>
+            02:00 PM - 06:00 PM
+
+
+            <!-- OTP -->
+
+            <div class="otp-display">
+
+                <div class="otp-label">
+                    APPROVAL OTP
+                </div>
+
+
+                <!--
+                    DEMO OTP ONLY
+
+                    In the final backend version,
+                    the real OTP will be generated
+                    securely by Flask and sent to the parent's email.
+                -->
+
+                <div class="otp-number">
+                    Check the parent's registered email for the OTP.
+                </div>
+
+
+                <div class="security-note">
+
+                    Share this OTP with your ward
+                    only if you approve the outpass.
+
+                </div>
+
+            </div>
+
+
+            <span class="sms-status">
+                ✓ Email Sent
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         NOTIFICATION 2 - EXIT
+    ================================================== -->
+
+    <div
+        class="notification-card exit-notification notification-item"
+        data-type="exit"
+    >
+
+
+        <div class="notification-header">
+
+
+            <div class="notification-type">
+                🚪 Student Exited Campus
+            </div>
+
+
+            <div class="notification-time">
+                25 August 2026, 10:05 AM
+            </div>
+
+        </div>
+
+
+
+        <div class="notification-body">
+
+            <strong>
+                Smart Outpass System
+            </strong>
+
+            <br><br>
+
+            Your ward
+            <strong>Student Name</strong>
+            has exited the campus using an
+            approved outpass.
+
+            <br><br>
+
+            <strong>
+                Outpass ID:
+            </strong>
+            OP002
+
+            <br>
+
+            <strong>
+                Destination:
+            </strong>
+            Kakinada
+
+            <br>
+
+            <strong>
+                Exit Time:
+            </strong>
+            10:05 AM
+
+
+            <br><br>
+
+            You will receive another SMS when
+            the student safely returns to campus.
+
+
+            <br>
+
+            <span class="sms-status">
+                ✓ Email Sent
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         NOTIFICATION 3 - RETURN
+    ================================================== -->
+
+    <div
+        class="notification-card return-notification notification-item"
+        data-type="return"
+    >
+
+
+        <div class="notification-header">
+
+
+            <div class="notification-type">
+                🏫 Student Returned Safely
+            </div>
+
+
+            <div class="notification-time">
+                25 August 2026, 02:48 PM
+            </div>
+
+        </div>
+
+
+
+        <div class="notification-body">
+
+            <strong>
+                Smart Outpass System
+            </strong>
+
+            <br><br>
+
+            Your ward
+            <strong>Student Name</strong>
+            has safely returned to the campus.
+
+            <br><br>
+
+            <strong>
+                Outpass ID:
+            </strong>
+            OP002
+
+            <br>
+
+            <strong>
+                Return Time:
+            </strong>
+            02:48 PM
+
+
+            <br><br>
+
+            The outpass has been completed
+            successfully.
+
+
+            <br>
+
+            <span class="sms-status">
+                ✓ Email Sent
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         NO NOTIFICATIONS
+    ================================================== -->
+
+    <div
+        id="noNotifications"
+        class="page-header text-center"
+        style="display:none;"
+    >
+
+        <h5>
+            No Notifications
+        </h5>
+
+        <p class="text-muted">
+            No notifications are available for
+            the selected category.
+        </p>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+    const API_URL = "http://127.0.0.1:5000";
+    const token = localStorage.getItem("smart_outpass_token");
+
+    function logoutParent(event) {
+        event.preventDefault();
+        fetch(`${API_URL}/api/logout`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token || ""}` }
+        }).catch(() => {}).finally(() => {
+            localStorage.removeItem("smart_outpass_token");
+            localStorage.removeItem("smart_outpass_user");
+            window.location.href = "../index.html";
+        });
+    }
+    const notificationsContainer = document.createElement("div");
+    notificationsContainer.id = "notificationsContainer";
+    document.getElementById("noNotifications").before(notificationsContainer);
+    document.querySelectorAll(".notification-item").forEach((item) => item.remove());
+
+    function showNotifications(type) {
+        const notifications = document.querySelectorAll(".notification-item");
+        let visibleCount = 0;
+
+        notifications.forEach((notification) => {
+            const matches = type === "all" || notification.dataset.type === type;
+            notification.style.display = matches ? "block" : "none";
+            if (matches) visibleCount++;
+        });
+
+        document.getElementById("noNotifications").style.display = visibleCount ? "none" : "block";
+    }
+
+    async function loadNotifications() {
+        if (!token) {
+            window.location.href = "../index.html";
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/api/notifications`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Unable to load email notifications.");
+            }
+
+            (data.notifications || []).forEach((item) => {
+                const kind = String(item.notification_type || "").toUpperCase();
+                const category = kind.includes("OTP") ? "otp" : kind.includes("EXIT") ? "exit" : kind.includes("RETURN") ? "return" : "other";
+                const card = document.createElement("article");
+                card.className = `notification-card notification-item ${category}-notification`;
+                card.dataset.type = category;
+
+                const header = document.createElement("div");
+                header.className = "notification-header";
+                const subject = document.createElement("div");
+                subject.className = "notification-type";
+                subject.textContent = item.subject || "Outpass notification";
+                const timestamp = document.createElement("div");
+                timestamp.className = "notification-time";
+                timestamp.textContent = item.created_at || "";
+                header.append(subject, timestamp);
+
+                const body = document.createElement("div");
+                body.className = "notification-body";
+                const message = document.createElement("p");
+                message.textContent = item.message || "";
+                const status = document.createElement("span");
+                status.className = "sms-status";
+                status.textContent = `Email ${item.status || "Pending"}`;
+                body.append(message, status);
+                card.append(header, body);
+                notificationsContainer.append(card);
+            });
+
+            showNotifications("all");
+        } catch (error) {
+            const emptyMessage = document.querySelector("#noNotifications p");
+            emptyMessage.textContent = error.message || "Unable to load email notifications.";
+            document.getElementById("noNotifications").style.display = "block";
+        }
+    }
+
+    loadNotifications();
+
+
+</script>
+
+
+</body>
+
+</html>

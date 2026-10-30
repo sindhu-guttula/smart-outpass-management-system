@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Exit Records - Smart Outpass</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            background-color: #f4f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar-custom {
+            background-color: #12355b;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: white !important;
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+
+        .page-container {
+            max-width: 1150px;
+            margin: 35px auto;
+        }
+
+        .page-header,
+        .table-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            color: #12355b;
+            font-weight: bold;
+        }
+
+        .page-subtitle {
+            color: #777;
+        }
+
+        .table th {
+            background-color: #12355b;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-outside {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-returned {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        .error-message {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+
+            .page-container {
+                margin: 20px 10px;
+            }
+
+            .table-card {
+                overflow-x: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-custom">
+
+    <div class="container-fluid">
+
+        <a
+            class="navbar-brand"
+            href="sdashboard.html"
+        >
+            SMART OUTPASS
+        </a>
+
+        <div>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                 href="sdashboard.html"
+            >
+                Dashboard
+            </a>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="exit-records.html"
+            >
+                Exit Records
+            </a>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="return-records.html"
+            >
+                Return Records
+            </a>
+
+            <a
+                class="nav-link d-inline-block"
+                href="../index.html"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="container page-container">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="page-header">
+
+        <h2 class="page-title">
+            Student Exit Records
+        </h2>
+
+        <p class="page-subtitle mb-0">
+            View students who have exited the campus using approved outpasses.
+        </p>
+
+    </div>
+
+
+
+    <!-- ================= ERROR ================= -->
+
+    <div
+        id="errorMessage"
+        class="alert alert-danger error-message"
+    ></div>
+
+
+
+    <!-- ================= RECORDS ================= -->
+
+    <div class="table-card">
+
+
+        <!-- SEARCH -->
+
+        <div class="search-box">
+
+            <label
+                for="searchInput"
+                class="form-label fw-bold"
+            >
+                Search Records
+            </label>
+
+            <input
+                type="text"
+                id="searchInput"
+                class="form-control"
+                placeholder="Search by student name, roll number or outpass ID..."
+                onkeyup="searchRecords()"
+            >
+
+        </div>
+
+
+
+        <!-- TABLE -->
+
+        <div class="table-responsive">
+
+            <table
+                class="table table-bordered table-hover align-middle"
+                id="exitTable"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>Outpass ID</th>
+
+                        <th>Student</th>
+
+                        <th>Roll Number</th>
+
+                        <th>Destination</th>
+
+                        <th>Outpass Date</th>
+
+                        <th>Scheduled Exit</th>
+
+                        <th>Actual Exit Time</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="exitTableBody">
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            class="loading"
+                        >
+                            Loading exit records...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+
+const API_BASE =
+    "http://127.0.0.1:5000";
+
+
+let exitRecords = [];
+
+
+
+/* =====================================================
+   LOAD EXIT RECORDS
+===================================================== */
+
+async function loadExitRecords() {
+
+    const tbody =
+        document.getElementById(
+            "exitTableBody"
+        );
+
+
+    const errorMessage =
+        document.getElementById(
+            "errorMessage"
+        );
+
+
+    try {
+
+        errorMessage.style.display =
+            "none";
+
+
+        const response =
+            await fetch(
+                `${API_BASE}/api/security/exit-records`
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Server returned ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            throw new Error(
+                data.message ||
+                "Failed to load exit records."
+            );
+
+        }
+
+
+        exitRecords =
+            data.records || [];
+
+
+        renderRecords(
+            exitRecords
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Exit records error:",
+            error
+        );
+
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="8"
+                    class="empty-message"
+                >
+                    Unable to load exit records.
+                </td>
+
+            </tr>
+
+        `;
+
+
+        errorMessage.textContent =
+            "Could not connect to the Smart Outpass server. Make sure app.py is running.";
+
+        errorMessage.style.display =
+            "block";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   RENDER RECORDS
+===================================================== */
+
+function renderRecords(records) {
+
+    const tbody =
+        document.getElementById(
+            "exitTableBody"
+        );
+
+
+    tbody.innerHTML = "";
+
+
+    if (!records || records.length === 0) {
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="8"
+                    class="empty-message"
+                >
+                    No exit records found.
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    records.forEach(record => {
+
+        const row =
+            document.createElement("tr");
+
+
+        let statusHTML;
+
+
+        if (
+            record.security_status === "Returned" ||
+            record.actual_return_time
+        ) {
+
+            statusHTML = `
+
+                <span class="status-badge status-returned">
+                    ✓ Returned
+                </span>
+
+            `;
+
+        }
+
+        else {
+
+            statusHTML = `
+
+                <span class="status-badge status-outside">
+                    Outside
+                </span>
+
+            `;
+
+        }
+
+
+        row.innerHTML = `
+
+            <td>
+
+                <strong>
+                    ${escapeHtml(
+                        record.outpass_id || "-"
+                    )}
+                </strong>
+
+            </td>
+
+
+            <td>
+                ${escapeHtml(
+                    record.student_name || "-"
+                )}
+            </td>
+
+
+            <td>
+                ${escapeHtml(
+                    record.roll_number || "-"
+                )}
+            </td>
+
+
+            <td>
+                ${escapeHtml(
+                    record.destination || "-"
+                )}
+            </td>
+
+
+            <td>
+                ${formatDate(
+                    record.outpass_date
+                )}
+            </td>
+
+
+            <td>
+                ${formatTime(
+                    record.exit_time
+                )}
+            </td>
+
+
+            <td>
+                ${formatDateTime(
+                    record.actual_exit_time
+                )}
+            </td>
+
+
+            <td>
+                ${statusHTML}
+            </td>
+
+        `;
+
+
+        tbody.appendChild(row);
+
+    });
+
+}
+
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function searchRecords() {
+
+    const input =
+        document.getElementById(
+            "searchInput"
+        );
+
+
+    const filter =
+        input.value
+            .toLowerCase()
+            .trim();
+
+
+    const filtered =
+        exitRecords.filter(record => {
+
+            const searchableText = `
+
+                ${record.outpass_id || ""}
+
+                ${record.student_name || ""}
+
+                ${record.roll_number || ""}
+
+                ${record.destination || ""}
+
+                ${record.security_status || ""}
+
+            `.toLowerCase();
+
+
+            return searchableText.includes(
+                filter
+            );
+
+        });
+
+
+    renderRecords(
+        filtered
+    );
+
+}
+
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(value) {
+
+    if (!value) {
+        return "-";
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if (isNaN(date.getTime())) {
+        return value;
+    }
+
+
+    return date.toLocaleDateString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   FORMAT TIME
+===================================================== */
+
+function formatTime(value) {
+
+    if (!value) {
+        return "-";
+    }
+
+
+    const parts =
+        String(value).split(":");
+
+
+    if (parts.length < 2) {
+        return value;
+    }
+
+
+    let hours =
+        parseInt(parts[0]);
+
+
+    const minutes =
+        parts[1];
+
+
+    const ampm =
+        hours >= 12
+            ? "PM"
+            : "AM";
+
+
+    hours =
+        hours % 12 || 12;
+
+
+    return `${hours}:${minutes} ${ampm}`;
+
+}
+
+
+
+/* =====================================================
+   FORMAT DATETIME
+===================================================== */
+
+function formatDateTime(value) {
+
+    if (!value) {
+        return "-";
+    }
+
+
+    const date =
+        new Date(
+            String(value).replace(" ", "T")
+        );
+
+
+    if (isNaN(date.getTime())) {
+        return value;
+    }
+
+
+    return date.toLocaleString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   HTML ESCAPE
+===================================================== */
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadExitRecords();
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Outpass History - Smart Digital Outpass</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            background-color: #f4f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar-custom {
+            background-color: #12355b;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: white !important;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        .page-header {
+            background-color: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            color: #12355b;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .page-subtitle {
+            color: #777;
+            margin-bottom: 0;
+        }
+
+        .summary-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            height: 100%;
+        }
+
+        .summary-icon {
+            font-size: 30px;
+        }
+
+        .summary-title {
+            color: #777;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .summary-number {
+            color: #12355b;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .filter-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin: 25px 0;
+        }
+
+        .table-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .table thead th {
+            background-color: #12355b;
+            color: white;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .status-completed {
+            background-color: #cfe2ff;
+            color: #084298;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #664d03;
+        }
+
+        .status-approved {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        #loadingMessage {
+            text-align: center;
+            padding: 50px;
+            color: #777;
+        }
+
+        #errorMessage {
+            display: none;
+        }
+
+        #noResults {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+
+        .student-info {
+            font-size: 14px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .modal-label {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 3px;
+        }
+
+        .modal-value {
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        @media (max-width: 768px) {
+
+            .page-container {
+                margin: 20px 10px;
+            }
+
+            .table-card {
+                overflow-x: auto;
+            }
+
+            .table {
+                min-width: 1050px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-custom">
+
+    <div class="container-fluid">
+
+        <a
+            class="navbar-brand"
+            href="dashboard.html"
+        >
+            SMART OUTPASS
+        </a>
+
+        <div>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="dashboard.html"
+            >
+                Dashboard
+            </a>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="my-outpasses.html"
+            >
+                My Outpasses
+            </a>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="notifications.html"
+            >
+                Notifications
+            </a>
+
+            <a
+                class="nav-link d-inline-block"
+                href="../index.html"
+                id="logoutLink"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="container page-container">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <h2 class="page-title">
+            Outpass History
+        </h2>
+
+        <p class="page-subtitle">
+            View your previous outpass requests and their final status.
+        </p>
+
+        <div
+            class="student-info"
+            id="studentInfo"
+        >
+            Loading student information...
+        </div>
+
+    </div>
+
+
+    <!-- ERROR -->
+
+    <div
+        id="errorMessage"
+        class="alert alert-danger"
+        role="alert"
+    ></div>
+
+
+    <!-- =================================================
+         SUMMARY
+    ================================================== -->
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    ✓
+                </div>
+
+                <div class="summary-title">
+                    Completed Outpasses
+                </div>
+
+                <div
+                    class="summary-number"
+                    id="completedCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    ✕
+                </div>
+
+                <div class="summary-title">
+                    Rejected Requests
+                </div>
+
+                <div
+                    class="summary-number"
+                    id="rejectedCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    📋
+                </div>
+
+                <div class="summary-title">
+                    Total History
+                </div>
+
+                <div
+                    class="summary-number"
+                    id="totalCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         FILTERS
+    ================================================== -->
+
+    <div class="filter-card">
+
+        <div class="row align-items-end">
+
+            <div class="col-md-5 mb-3 mb-md-0">
+
+                <label
+                    for="searchInput"
+                    class="form-label fw-bold"
+                >
+                    Search
+                </label>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="form-control"
+                    placeholder="Search by ID, destination or reason"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="col-md-4 mb-3 mb-md-0">
+
+                <label
+                    for="statusFilter"
+                    class="form-label fw-bold"
+                >
+                    Status
+                </label>
+
+                <select
+                    id="statusFilter"
+                    class="form-select"
+                >
+
+                    <option value="all">
+                        All
+                    </option>
+
+                    <option value="completed">
+                        Completed
+                    </option>
+
+                    <option value="rejected">
+                        Rejected
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <button
+                    type="button"
+                    id="resetButton"
+                    class="btn btn-secondary w-100"
+                >
+                    Reset Filters
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TABLE
+    ================================================== -->
+
+    <div class="table-card">
+
+        <div
+            id="loadingMessage"
+        >
+
+            <div class="spinner-border text-primary mb-3"></div>
+
+            <p>
+                Loading your outpass history...
+            </p>
+
+        </div>
+
+
+        <div
+            class="table-responsive"
+            id="tableContainer"
+            style="display: none;"
+        >
+
+            <table
+                class="table table-bordered table-hover"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Outpass ID
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Destination
+                        </th>
+
+                        <th>
+                            Reason
+                        </th>
+
+                        <th>
+                            Planned Exit
+                        </th>
+
+                        <th>
+                            Actual Return
+                        </th>
+
+                        <th>
+                            Final Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="historyTableBody"></tbody>
+
+            </table>
+
+        </div>
+
+
+        <div id="noResults">
+
+            <h5>
+                No Records Found
+            </h5>
+
+            <p>
+                No completed or rejected outpass records match your search or selected filter.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DETAILS MODAL
+===================================================== -->
+
+<div
+    class="modal fade"
+    id="detailsModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Outpass History Details
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <div class="modal-label">Outpass ID</div>
+                        <div class="modal-value" id="modalId">—</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="modal-label">Student</div>
+                        <div class="modal-value" id="modalStudent">—</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="modal-label">Roll Number</div>
+                        <div class="modal-value" id="modalRollNumber">—</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="modal-label">Department</div>
+                        <div class="modal-value" id="modalDepartment">—</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="modal-label">Date</div>
+                        <div class="modal-value" id="modalDate">—</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="modal-label">Destination</div>
+                        <div class="modal-value" id="modalDestination">—</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="modal-label">Reason</div>
+                        <div class="modal-value" id="modalReason">—</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="modal-label">Planned Exit Time</div>
+                        <div class="modal-value" id="modalExit">—</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="modal-label">Expected Return Date</div>
+                        <div class="modal-value" id="modalReturnDate">—</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="modal-label">Actual Exit Time</div>
+                        <div class="modal-value" id="modalActualExit">—</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="modal-label">Actual Return Time</div>
+                        <div class="modal-value" id="modalActualReturn">—</div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <div class="modal-label">Parent Status</div>
+                        <div class="modal-value" id="modalParentStatus">—</div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <div class="modal-label">Mentor Status</div>
+                        <div class="modal-value" id="modalMentorStatus">—</div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <div class="modal-label">Security Status</div>
+                        <div class="modal-value" id="modalSecurityStatus">—</div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <div class="modal-label">Final Status</div>
+                        <div class="modal-value" id="modalStatus">—</div>
+                    </div>
+
+                    <div
+                        class="col-12"
+                        id="rejectionReasonContainer"
+                        style="display: none;"
+                    >
+
+                        <div class="modal-label">
+                            Mentor Rejection Reason
+                        </div>
+
+                        <div
+                            id="modalRejectionReason"
+                            class="text-danger"
+                        >
+                            —
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Bootstrap -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+<script>
+
+/* =========================================================
+   CONFIGURATION
+========================================================= */
+
+const API_URL = "http://127.0.0.1:5000";
+
+
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
+
+const token =
+    localStorage.getItem(
+        "smart_outpass_token"
+    );
+
+let currentUser = null;
+
+try {
+
+    const rawUser =
+        localStorage.getItem(
+            "smart_outpass_user"
+        );
+
+    currentUser =
+        rawUser
+            ? JSON.parse(rawUser)
+            : null;
+
+}
+catch (error) {
+
+    console.error(
+        "Unable to read logged-in user:",
+        error
+    );
+
+    currentUser = null;
+
+}
+
+
+/* =========================================================
+   DOM ELEMENTS
+========================================================= */
+
+const loadingMessage =
+    document.getElementById(
+        "loadingMessage"
+    );
+
+const tableContainer =
+    document.getElementById(
+        "tableContainer"
+    );
+
+const historyTableBody =
+    document.getElementById(
+        "historyTableBody"
+    );
+
+const noResults =
+    document.getElementById(
+        "noResults"
+    );
+
+const errorMessage =
+    document.getElementById(
+        "errorMessage"
+    );
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+const statusFilter =
+    document.getElementById(
+        "statusFilter"
+    );
+
+const resetButton =
+    document.getElementById(
+        "resetButton"
+    );
+
+const completedCount =
+    document.getElementById(
+        "completedCount"
+    );
+
+const rejectedCount =
+    document.getElementById(
+        "rejectedCount"
+    );
+
+const totalCount =
+    document.getElementById(
+        "totalCount"
+    );
+
+const studentInfo =
+    document.getElementById(
+        "studentInfo"
+    );
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+const detailsModal =
+    new bootstrap.Modal(
+        document.getElementById(
+            "detailsModal"
+        )
+    );
+
+
+/* =========================================================
+   HISTORY DATA
+========================================================= */
+
+let historyData = [];
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================================
+   SHOW ERROR
+========================================================= */
+
+function showError(message) {
+
+    errorMessage.textContent =
+        message ||
+        "Unable to load history.";
+
+    errorMessage.style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   HIDE ERROR
+========================================================= */
+
+function hideError() {
+
+    errorMessage.textContent = "";
+
+    errorMessage.style.display =
+        "none";
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+function logoutUser() {
+
+    localStorage.removeItem(
+        "smart_outpass_token"
+    );
+
+    localStorage.removeItem(
+        "smart_outpass_user"
+    );
+
+    localStorage.removeItem(
+        "smart_outpass_selected_id"
+    );
+
+    localStorage.removeItem(
+        "smart_outpass_selected_outpass_id"
+    );
+
+    localStorage.removeItem(
+        "selectedOutpassId"
+    );
+
+}
+
+
+/* =========================================================
+   LOGIN REDIRECT
+========================================================= */
+
+function redirectToLogin(message) {
+
+    logoutUser();
+
+    if (message) {
+
+        sessionStorage.setItem(
+            "smart_outpass_login_message",
+            message
+        );
+
+    }
+
+    window.location.href =
+        "../index.html";
+
+}
+
+
+/* =========================================================
+   GET STUDENT ROLL NUMBER
+========================================================= */
+
+function getCurrentStudentRollNumber() {
+
+    if (!currentUser) {
+
+        return "";
+
+    }
+
+    return String(
+        currentUser.roll_number ||
+        currentUser.rollNumber ||
+        currentUser.username ||
+        ""
+    ).trim();
+
+}
+
+
+/* =========================================================
+   DISPLAY STUDENT INFO
+========================================================= */
+
+function displayStudentInfo() {
+
+    if (!currentUser) {
+
+        studentInfo.textContent =
+            "";
+
+        return;
+
+    }
+
+    const name =
+        currentUser.name ||
+        currentUser.student_name ||
+        "Student";
+
+    const rollNumber =
+        getCurrentStudentRollNumber();
+
+    const department =
+        currentUser.department ||
+        "";
+
+    let text =
+        "Logged in as " +
+        name;
+
+    if (rollNumber) {
+
+        text +=
+            " | Roll No: " +
+            rollNumber;
+
+    }
+
+    if (department) {
+
+        text +=
+            " | Department: " +
+            department;
+
+    }
+
+    studentInfo.textContent =
+        text;
+
+}
+
+
+/* =========================================================
+   FORMAT DATE
+========================================================= */
+
+function formatDate(value) {
+
+    if (!value) {
+
+        return "-";
+
+    }
+
+    const text =
+        String(value)
+            .substring(0, 10);
+
+    const parts =
+        text.split("-");
+
+    if (parts.length !== 3) {
+
+        return String(value);
+
+    }
+
+    const year =
+        Number(parts[0]);
+
+    const month =
+        Number(parts[1]);
+
+    const day =
+        Number(parts[2]);
+
+    if (
+        !year ||
+        !month ||
+        !day
+    ) {
+
+        return String(value);
+
+    }
+
+    const date =
+        new Date(
+            year,
+            month - 1,
+            day
+        );
+
+    return date.toLocaleDateString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FORMAT TIME
+========================================================= */
+
+function formatTime(value) {
+
+    if (!value) {
+
+        return "-";
+
+    }
+
+    const text =
+        String(value);
+
+    const match =
+        text.match(
+            /^(\d{1,2}):(\d{2})(?::(\d{2}))?/
+        );
+
+    if (!match) {
+
+        return text;
+
+    }
+
+    let hour =
+        Number(match[1]);
+
+    const minute =
+        match[2];
+
+    const period =
+        hour >= 12
+            ? "PM"
+            : "AM";
+
+    hour =
+        hour % 12;
+
+    if (hour === 0) {
+
+        hour = 12;
+
+    }
+
+    return (
+        hour +
+        ":" +
+        minute +
+        " " +
+        period
+    );
+
+}
+
+
+/* =========================================================
+   FORMAT DATETIME
+========================================================= */
+
+function formatDateTime(value) {
+
+    if (!value) {
+
+        return "-";
+
+    }
+
+    const text =
+        String(value).trim();
+
+    const match =
+        text.match(
+            /^(\d{4}-\d{2}-\d{2})[ T](\d{1,2}:\d{2}(?::\d{2})?)/
+        );
+
+    if (match) {
+
+        return (
+            formatDate(match[1]) +
+            " " +
+            formatTime(match[2])
+        );
+
+    }
+
+    return text;
+
+}
+
+
+/* =========================================================
+   DETERMINE HISTORY STATUS
+========================================================= */
+
+function getHistoryStatus(request) {
+
+    const overallStatus =
+        String(
+            request.overall_status || ""
+        )
+        .toLowerCase()
+        .trim();
+
+    const securityStatus =
+        String(
+            request.security_status || ""
+        )
+        .toLowerCase()
+        .trim();
+
+    const parentStatus =
+        String(
+            request.parent_status || ""
+        )
+        .toLowerCase()
+        .trim();
+
+    const mentorStatus =
+        String(
+            request.mentor_status || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    /* -----------------------------------------
+       COMPLETED
+    ----------------------------------------- */
+
+    if (
+        securityStatus === "returned" ||
+        securityStatus.includes("returned") ||
+        request.actual_return_time
+    ) {
+
+        return "completed";
+
+    }
+
+
+    /* -----------------------------------------
+       REJECTED
+    ----------------------------------------- */
+
+    if (
+        overallStatus.includes("rejected") ||
+        overallStatus.includes("reject") ||
+        parentStatus.includes("rejected") ||
+        parentStatus.includes("reject") ||
+        mentorStatus.includes("rejected") ||
+        mentorStatus.includes("reject")
+    ) {
+
+        return "rejected";
+
+    }
+
+
+    return "pending";
+
+}
+
+
+/* =========================================================
+   DISPLAY STATUS
+========================================================= */
+
+function getDisplayStatus(request) {
+
+    const historyStatus =
+        getHistoryStatus(request);
+
+    if (
+        historyStatus === "completed"
+    ) {
+
+        return "Completed";
+
+    }
+
+    if (
+        historyStatus === "rejected"
+    ) {
+
+        return "Rejected";
+
+    }
+
+    return (
+        request.overall_status ||
+        "Pending"
+    );
+
+}
+
+
+/* =========================================================
+   STATUS BADGE
+========================================================= */
+
+function getStatusBadge(request) {
+
+    const status =
+        getHistoryStatus(request);
+
+    if (status === "completed") {
+
+        return `
+            <span class="status-badge status-completed">
+                Completed
+            </span>
+        `;
+
+    }
+
+    if (status === "rejected") {
+
+        return `
+            <span class="status-badge status-rejected">
+                Rejected
+            </span>
+        `;
+
+    }
+
+    return `
+        <span class="status-badge status-pending">
+            ${escapeHTML(
+                getDisplayStatus(request)
+            )}
+        </span>
+    `;
+
+}
+
+
+/* =========================================================
+   SEARCH TEXT
+========================================================= */
+
+function getSearchText(request) {
+
+    return (
+
+        String(
+            request.outpass_id || ""
+        ) +
+
+        " " +
+
+        String(
+            request.destination || ""
+        ) +
+
+        " " +
+
+        String(
+            request.reason || ""
+        )
+
+    ).toLowerCase();
+
+}
+
+
+/* =========================================================
+   NORMALIZE API RESPONSE
+========================================================= */
+
+function getRequestArray(result) {
+
+    if (Array.isArray(result)) {
+
+        return result;
+
+    }
+
+    if (
+        result &&
+        Array.isArray(result.requests)
+    ) {
+
+        return result.requests;
+
+    }
+
+    if (
+        result &&
+        Array.isArray(result.outpasses)
+    ) {
+
+        return result.outpasses;
+
+    }
+
+    if (
+        result &&
+        Array.isArray(result.data)
+    ) {
+
+        return result.data;
+
+    }
+
+    if (
+        result &&
+        result.request &&
+        typeof result.request === "object"
+    ) {
+
+        return [result.request];
+
+    }
+
+    if (
+        result &&
+        result.outpass &&
+        typeof result.outpass === "object"
+    ) {
+
+        return [result.outpass];
+
+    }
+
+    return [];
+
+}
+
+
+/* =========================================================
+   LOAD HISTORY
+========================================================= */
+
+async function loadHistory() {
+
+    hideError();
+
+    loadingMessage.style.display =
+        "block";
+
+    tableContainer.style.display =
+        "none";
+
+    noResults.style.display =
+        "none";
+
+
+    /* -----------------------------------------
+       LOGIN CHECK
+    ----------------------------------------- */
+
+    if (!token || !currentUser) {
+
+        loadingMessage.style.display =
+            "none";
+
+        showError(
+            "Your login session is missing. Please login again."
+        );
+
+        setTimeout(
+            function() {
+
+                redirectToLogin();
+
+            },
+            1000
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       ROLE CHECK
+    ----------------------------------------- */
+
+    if (
+        currentUser.role &&
+        String(
+            currentUser.role
+        ).toLowerCase() !== "student"
+    ) {
+
+        loadingMessage.style.display =
+            "none";
+
+        showError(
+            "This page is available only for students."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                API_URL +
+                "/api/outpasses",
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Authorization":
+                            "Bearer " + token,
+
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
+
+
+        let result;
+
+        try {
+
+            result =
+                await response.json();
+
+        }
+        catch (jsonError) {
+
+            throw new Error(
+                "Invalid response received from the server."
+            );
+
+        }
+
+
+        /* -----------------------------------------
+           SESSION EXPIRED
+        ----------------------------------------- */
+
+        if (
+            response.status === 401
+        ) {
+
+            redirectToLogin(
+                "Your session has expired. Please login again."
+            );
+
+            return;
+
+        }
+
+
+        /* -----------------------------------------
+           FORBIDDEN
+        ----------------------------------------- */
+
+        if (
+            response.status === 403
+        ) {
+
+            throw new Error(
+                result.message ||
+                "You are not authorized to view this history."
+            );
+
+        }
+
+
+        /* -----------------------------------------
+           OTHER ERRORS
+        ----------------------------------------- */
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.message ||
+                result.error ||
+                "Unable to load outpass history."
+            );
+
+        }
+
+
+        /* -----------------------------------------
+           GET REQUESTS
+        ----------------------------------------- */
+
+        let requests =
+            getRequestArray(result);
+
+
+        /* -----------------------------------------
+           EXTRA STUDENT FILTER
+        ----------------------------------------- */
+
+        const rollNumber =
+            getCurrentStudentRollNumber();
+
+
+        if (rollNumber) {
+
+            requests =
+                requests.filter(
+                    function(request) {
+
+                        return (
+                            String(
+                                request.roll_number || ""
+                            ).trim() ===
+                            rollNumber
+                        );
+
+                    }
+                );
+
+        }
+
+
+        /* -----------------------------------------
+           HISTORY ONLY
+        ----------------------------------------- */
+
+        historyData =
+            requests.filter(
+                function(request) {
+
+                    const status =
+                        getHistoryStatus(
+                            request
+                        );
+
+                    return (
+                        status === "completed" ||
+                        status === "rejected"
+                    );
+
+                }
+            );
+
+
+        /* -----------------------------------------
+           SORT NEWEST FIRST
+        ----------------------------------------- */
+
+        historyData.sort(
+            function(a, b) {
+
+                const dateA =
+                    String(
+                        a.submitted_at ||
+                        a.outpass_date ||
+                        ""
+                    );
+
+                const dateB =
+                    String(
+                        b.submitted_at ||
+                        b.outpass_date ||
+                        ""
+                    );
+
+                return dateB.localeCompare(
+                    dateA
+                );
+
+            }
+        );
+
+
+        updateSummary();
+
+        renderHistory();
+
+
+        /* -----------------------------------------
+           OPEN REQUEST FROM URL
+        ----------------------------------------- */
+
+        openOutpassFromURL();
+
+    }
+    catch (error) {
+
+        console.error(
+            "History loading error:",
+            error
+        );
+
+        historyData = [];
+
+        updateSummary();
+
+        renderHistory();
+
+        showError(
+            error.message ||
+            "Unable to connect to the backend."
+        );
+
+    }
+    finally {
+
+        loadingMessage.style.display =
+            "none";
+
+        tableContainer.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE SUMMARY
+========================================================= */
+
+function updateSummary() {
+
+    let completed = 0;
+
+    let rejected = 0;
+
+
+    historyData.forEach(
+        function(request) {
+
+            const status =
+                getHistoryStatus(
+                    request
+                );
+
+            if (
+                status === "completed"
+            ) {
+
+                completed++;
+
+            }
+
+            if (
+                status === "rejected"
+            ) {
+
+                rejected++;
+
+            }
+
+        }
+    );
+
+
+    completedCount.textContent =
+        completed;
+
+    rejectedCount.textContent =
+        rejected;
+
+    totalCount.textContent =
+        historyData.length;
+
+}
+
+
+/* =========================================================
+   RENDER HISTORY
+========================================================= */
+
+function renderHistory() {
+
+    const searchValue =
+        searchInput.value
+            .toLowerCase()
+            .trim();
+
+    const selectedStatus =
+        statusFilter.value;
+
+
+    const filtered =
+        historyData.filter(
+            function(request) {
+
+                const status =
+                    getHistoryStatus(
+                        request
+                    );
+
+                const searchText =
+                    getSearchText(
+                        request
+                    );
+
+                const matchesSearch =
+                    searchText.includes(
+                        searchValue
+                    );
+
+                const matchesStatus =
+                    selectedStatus === "all" ||
+                    status === selectedStatus;
+
+                return (
+                    matchesSearch &&
+                    matchesStatus
+                );
+
+            }
+        );
+
+
+    historyTableBody.innerHTML =
+        "";
+
+
+    if (
+        filtered.length === 0
+    ) {
+
+        noResults.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    noResults.style.display =
+        "none";
+
+
+    filtered.forEach(
+        function(request) {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.innerHTML = `
+
+                <td>
+                    <strong>
+                        ${escapeHTML(
+                            request.outpass_id || "-"
+                        )}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        formatDate(
+                            request.outpass_date
+                        )
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        request.destination || "-"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        request.reason || "-"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        formatTime(
+                            request.exit_time
+                        )
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        formatDateTime(
+                            request.actual_return_time
+                        )
+                    )}
+                </td>
+
+                <td>
+                    ${getStatusBadge(
+                        request
+                    )}
+                </td>
+
+                <td>
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-primary view-details-btn"
+                        data-outpass-id="${escapeHTML(
+                            request.outpass_id || ""
+                        )}"
+                    >
+                        View
+                    </button>
+                </td>
+
+            `;
+
+
+            historyTableBody.appendChild(
+                row
+            );
+
+        }
+    );
+
+
+    attachViewButtons();
+
+}
+
+
+/* =========================================================
+   ATTACH VIEW BUTTONS
+========================================================= */
+
+function attachViewButtons() {
+
+    const buttons =
+        document.querySelectorAll(
+            ".view-details-btn"
+        );
+
+
+    buttons.forEach(
+        function(button) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    const outpassId =
+                        button.getAttribute(
+                            "data-outpass-id"
+                        );
+
+                    viewHistoryDetails(
+                        outpassId
+                    );
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   VIEW HISTORY DETAILS
+========================================================= */
+
+function viewHistoryDetails(outpassId) {
+
+    const request =
+        historyData.find(
+            function(item) {
+
+                return String(
+                    item.outpass_id || ""
+                ) ===
+                String(
+                    outpassId || ""
+                );
+
+            }
+        );
+
+
+    if (!request) {
+
+        showError(
+            "Unable to find the selected outpass."
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "modalId"
+    ).textContent =
+        request.outpass_id || "-";
+
+
+    document.getElementById(
+        "modalStudent"
+    ).textContent =
+        request.student_name || "-";
+
+
+    document.getElementById(
+        "modalRollNumber"
+    ).textContent =
+        request.roll_number || "-";
+
+
+    document.getElementById(
+        "modalDepartment"
+    ).textContent =
+        request.department || "-";
+
+
+    document.getElementById(
+        "modalDate"
+    ).textContent =
+        formatDate(
+            request.outpass_date
+        );
+
+
+    document.getElementById(
+        "modalDestination"
+    ).textContent =
+        request.destination || "-";
+
+
+    document.getElementById(
+        "modalReason"
+    ).textContent =
+        request.reason || "-";
+
+
+    document.getElementById(
+        "modalExit"
+    ).textContent =
+        formatTime(
+            request.exit_time
+        );
+
+
+    document.getElementById(
+        "modalReturnDate"
+    ).textContent =
+        formatDate(
+            request.return_date
+        );
+
+
+    document.getElementById(
+        "modalActualExit"
+    ).textContent =
+        formatDateTime(
+            request.actual_exit_time
+        );
+
+
+    document.getElementById(
+        "modalActualReturn"
+    ).textContent =
+        formatDateTime(
+            request.actual_return_time
+        );
+
+
+    document.getElementById(
+        "modalParentStatus"
+    ).textContent =
+        request.parent_status || "-";
+
+
+    document.getElementById(
+        "modalMentorStatus"
+    ).textContent =
+        request.mentor_status || "-";
+
+
+    document.getElementById(
+        "modalSecurityStatus"
+    ).textContent =
+        request.security_status || "-";
+
+
+    document.getElementById(
+        "modalStatus"
+    ).textContent =
+        getDisplayStatus(
+            request
+        );
+
+
+    const rejectionContainer =
+        document.getElementById(
+            "rejectionReasonContainer"
+        );
+
+    const rejectionReason =
+        document.getElementById(
+            "modalRejectionReason"
+        );
+
+
+    if (
+        request.mentor_rejection_reason
+    ) {
+
+        rejectionContainer.style.display =
+            "block";
+
+        rejectionReason.textContent =
+            request.mentor_rejection_reason;
+
+    }
+    else {
+
+        rejectionContainer.style.display =
+            "none";
+
+        rejectionReason.textContent =
+            "—";
+
+    }
+
+
+    detailsModal.show();
+
+}
+
+
+/* =========================================================
+   OPEN OUTPASS FROM URL
+========================================================= */
+
+function openOutpassFromURL() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const outpassId =
+        params.get(
+            "outpass_id"
+        );
+
+
+    if (!outpassId) {
+
+        return;
+
+    }
+
+
+    const request =
+        historyData.find(
+            function(item) {
+
+                return String(
+                    item.outpass_id || ""
+                ) ===
+                String(outpassId);
+
+            }
+        );
+
+
+    if (request) {
+
+        setTimeout(
+            function() {
+
+                viewHistoryDetails(
+                    outpassId
+                );
+
+            },
+            200
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FILTER EVENTS
+========================================================= */
+
+searchInput.addEventListener(
+    "input",
+    function() {
+
+        renderHistory();
+
+    }
+);
+
+
+statusFilter.addEventListener(
+    "change",
+    function() {
+
+        renderHistory();
+
+    }
+);
+
+
+resetButton.addEventListener(
+    "click",
+    function() {
+
+        searchInput.value =
+            "";
+
+        statusFilter.value =
+            "all";
+
+        renderHistory();
+
+    }
+);
+
+
+/* =========================================================
+   LOGOUT EVENT
+========================================================= */
+
+document.getElementById(
+    "logoutLink"
+).addEventListener(
+    "click",
+    function() {
+
+        logoutUser();
+
+    }
+);
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        displayStudentInfo();
+
+        loadHistory();
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

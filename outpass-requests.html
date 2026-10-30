@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Outpass Requests - Parent</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* ================= GENERAL ================= */
+
+        body {
+            background-color: #f4f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        .navbar-custom {
+            background-color: #12355b;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: white !important;
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+
+
+        /* ================= MAIN CONTAINER ================= */
+
+        .page-container {
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        .page-header {
+            background-color: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            color: #12355b;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .page-subtitle {
+            color: #777;
+            margin-bottom: 0;
+        }
+
+
+        /* ================= REQUEST CARD ================= */
+
+        .request-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+
+        /* ================= REQUEST HEADER ================= */
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .request-id {
+            color: #12355b;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+
+        /* ================= STATUS ================= */
+
+        .status-badge {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
+
+        /* ================= DETAILS ================= */
+
+        .details-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e1e5ea;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .detail-label {
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            color: #333;
+            font-weight: bold;
+        }
+
+
+        /* ================= OTP INFORMATION ================= */
+
+        .otp-box {
+            background-color: #eef5ff;
+            border: 1px solid #cfe2ff;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 20px;
+        }
+
+        .otp-title {
+            color: #12355b;
+            font-weight: bold;
+        }
+
+        .otp-text {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .sms-badge {
+            display: inline-block;
+            background-color: #0d6efd;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        /* ================= INFO BOX ================= */
+
+        .info-box {
+            background-color: #fff8e1;
+            border: 1px solid #ffe69c;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #664d03;
+            font-size: 14px;
+        }
+
+
+        /* ================= EMPTY ================= */
+
+        .empty-box {
+            background-color: white;
+            text-align: center;
+            padding: 50px;
+            border-radius: 15px;
+            color: #777;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* ================= LOADING ================= */
+
+        .loading-box {
+            background-color: white;
+            text-align: center;
+            padding: 40px;
+            border-radius: 15px;
+            color: #777;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            .page-container {
+                margin: 20px 10px;
+            }
+
+            .request-header {
+                display: block;
+            }
+
+            .request-header .status-badge {
+                margin-top: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-custom">
+
+    <div class="container-fluid">
+
+        <a
+            class="navbar-brand"
+            href="pdashboard.html"
+        >
+            SMART OUTPASS
+        </a>
+
+
+        <div>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="pdashboard.html"
+            >
+                Dashboard
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="outpass-requests.html"
+            >
+                Requests
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="pnotifications.html"
+            >
+                Notifications
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block"
+                href="../index.html"
+                onclick="logoutParent(event)"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="container page-container">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="page-header">
+
+        <h2 class="page-title">
+            Outpass Requests
+        </h2>
+
+        <p class="page-subtitle">
+            View your ward's outpass requests and approval status.
+        </p>
+
+    </div>
+
+
+
+    <!-- ================= LOADING ================= -->
+
+    <div
+        id="loadingMessage"
+        class="loading-box"
+    >
+
+        <div
+            class="spinner-border text-primary mb-3"
+            role="status"
+        ></div>
+
+        <h5>
+            Loading Outpass Requests...
+        </h5>
+
+        <p>
+            Please wait while we retrieve the latest requests.
+        </p>
+
+    </div>
+
+
+
+    <!-- ================= ERROR ================= -->
+
+    <div
+        id="errorMessage"
+        class="empty-box"
+        style="display: none;"
+    >
+
+        <h5>
+            Unable to Load Requests
+        </h5>
+
+        <p id="errorText">
+            Something went wrong.
+        </p>
+
+        <button
+            class="btn btn-primary btn-sm"
+            onclick="loadRequests()"
+        >
+            Try Again
+        </button>
+
+    </div>
+
+
+
+    <!-- ================= REQUESTS ================= -->
+
+    <div id="requestsContainer"></div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =====================================================
+   FLASK API
+===================================================== */
+
+const API_URL = "http://127.0.0.1:5000";
+const token = localStorage.getItem("smart_outpass_token");
+
+function logoutParent(event) {
+    event.preventDefault();
+    fetch(`${API_URL}/api/logout`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token || ""}` }
+    }).catch(() => {}).finally(() => {
+        localStorage.removeItem("smart_outpass_token");
+        localStorage.removeItem("smart_outpass_user");
+        window.location.href = "../index.html";
+    });
+}
+
+
+
+/* =====================================================
+   LOAD OUTPASS REQUESTS
+===================================================== */
+
+async function loadRequests() {
+
+    if (!token) {
+        window.location.href = "../index.html";
+        return;
+    }
+
+    const container =
+        document.getElementById("requestsContainer");
+
+    const loadingMessage =
+        document.getElementById("loadingMessage");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+    const errorText =
+        document.getElementById("errorText");
+
+
+    loadingMessage.style.display = "block";
+
+    errorMessage.style.display = "none";
+
+    container.innerHTML = "";
+
+
+    try {
+
+        /* =================================================
+           CALL FLASK API
+        ================================================= */
+
+        const response = await fetch(
+            API_URL + "/api/outpasses",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+
+        /* =================================================
+           READ JSON RESPONSE
+        ================================================= */
+
+        const data = await response.json();
+
+
+        /* =================================================
+           HANDLE HTTP ERROR
+        ================================================= */
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Failed to load outpass requests."
+            );
+
+        }
+
+
+        /* =================================================
+           IMPORTANT FIX
+
+           Flask returns:
+
+           {
+               "requests": [...]
+           }
+
+           So we must get the requests array
+           from data.requests.
+        ================================================= */
+
+        const requests = data.requests || [];
+
+
+        loadingMessage.style.display = "none";
+
+
+        /* =================================================
+           CHECK IF REQUESTS EXIST
+        ================================================= */
+
+        if (
+            !Array.isArray(requests) ||
+            requests.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="empty-box">
+
+                    <h5>
+                        No Outpass Requests
+                    </h5>
+
+                    <p>
+                        There are currently no outpass
+                        requests available.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        /* =================================================
+           DISPLAY ALL REQUESTS
+        ================================================= */
+
+        requests.forEach(function(request) {
+
+            container.innerHTML +=
+                createRequestCard(request);
+
+        });
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Error loading requests:",
+            error
+        );
+
+
+        loadingMessage.style.display = "none";
+
+        errorMessage.style.display = "block";
+
+
+        errorText.innerText =
+            error.message ||
+            "Unable to connect to Flask backend.";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   CREATE REQUEST CARD
+===================================================== */
+
+function createRequestCard(request) {
+
+
+    const parentStatus =
+        String(
+            request.parent_status ||
+            "Pending"
+        );
+
+
+    const mentorStatus =
+        String(
+            request.mentor_status ||
+            "Pending"
+        );
+
+
+    const securityStatus =
+        String(
+            request.security_status ||
+            "Not Exited"
+        );
+
+
+    const overallStatus =
+        String(
+            request.overall_status ||
+            ""
+        );
+
+
+    const parentStatusLower =
+        parentStatus.toLowerCase();
+
+
+    const overallStatusLower =
+        overallStatus.toLowerCase();
+
+
+
+    /* =================================================
+       DEFAULT STATUS
+    ================================================= */
+
+    let statusClass =
+        "status-pending";
+
+
+    let statusText =
+        "Waiting for Parent Approval";
+
+
+
+    /* =================================================
+       PARENT APPROVED
+    ================================================= */
+
+    if (
+        parentStatusLower === "approved"
+    ) {
+
+        statusClass =
+            "status-approved";
+
+        statusText =
+            "Parent Approved";
+
+    }
+
+
+
+    /* =================================================
+       REJECTED
+    ================================================= */
+
+    if (
+        overallStatusLower.includes("rejected")
+    ) {
+
+        statusClass =
+            "status-rejected";
+
+        statusText =
+            "Not Approved";
+
+    }
+
+
+
+    /* =================================================
+       FORMATTED DATES
+    ================================================= */
+
+    const submittedDate =
+        formatDateTime(
+            request.submitted_at
+        );
+
+
+    const outpassDate =
+        formatDate(
+            request.outpass_date
+        );
+
+
+    const returnDate =
+        formatDate(
+            request.return_date
+        );
+
+
+
+    /* =================================================
+       APPROVAL SECTION
+    ================================================= */
+
+    let approvalSection = "";
+
+
+
+    /* =================================================
+       PENDING PARENT APPROVAL
+    ================================================= */
+
+    if (
+        parentStatusLower === "pending"
+    ) {
+
+        approvalSection = `
+
+            <div class="otp-box">
+
+                <div class="otp-title">
+                    🔐 Parent Approval
+                </div>
+
+
+                <p class="otp-text mt-2">
+                    Enter the approval OTP
+                    to approve this outpass.
+                </p>
+
+
+                <div class="row g-3 align-items-end">
+
+
+                    <div class="col-md-6">
+
+                        <label
+                            class="form-label"
+                            for="otp-${escapeHtml(request.outpass_id)}"
+                        >
+                            Approval OTP
+                        </label>
+
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="otp-${escapeHtml(request.outpass_id)}"
+                            maxlength="6"
+                            inputmode="numeric"
+                            autocomplete="one-time-code"
+                            placeholder="Enter 6-digit OTP"
+                        >
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <button
+                            type="button"
+                            class="btn btn-success"
+                            onclick="approveRequest('${escapeJs(request.outpass_id)}')"
+                        >
+                            ✓ Approve Outpass
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="approvalMessage-${escapeHtml(request.outpass_id)}"
+                    class="mt-3"
+                ></div>
+
+
+                <div class="info-box">
+                    The OTP is sent to the registered parent email address.
+                    Enter that code to approve this request.
+
+                </div>
+
+
+                <div class="mt-3">
+
+                    <span class="sms-badge">
+                        Email OTP
+                    </span>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    /* =================================================
+       ALREADY APPROVED
+    ================================================= */
+
+    else if (
+        parentStatusLower === "approved"
+    ) {
+
+        approvalSection = `
+
+            <div class="otp-box">
+
+                <div class="otp-title">
+                    ✓ Parent Approval Completed
+                </div>
+
+
+                <p class="otp-text mt-2">
+                    This outpass has already been
+                    approved by the parent.
+                </p>
+
+
+                <div class="detail-value text-success">
+                    ✓ OTP Verified
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    /* =================================================
+       OTHER STATUS
+    ================================================= */
+
+    else {
+
+        approvalSection = `
+
+            <div class="otp-box">
+
+                <div class="otp-title">
+                    Outpass Status
+                </div>
+
+
+                <p class="otp-text mt-2">
+                    ${escapeHtml(
+                        overallStatus ||
+                        parentStatus
+                    )}
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    /* =================================================
+       COMPLETE REQUEST CARD
+    ================================================= */
+
+    return `
+
+        <div
+            class="request-card"
+            id="request-${escapeHtml(request.outpass_id)}"
+        >
+
+
+            <!-- REQUEST HEADER -->
+
+            <div class="request-header">
+
+                <div>
+
+                    <div class="request-id">
+
+                        Outpass
+                        ${escapeHtml(
+                            request.outpass_id
+                        )}
+
+                    </div>
+
+
+                    <small class="text-muted">
+
+                        Submitted on
+                        ${escapeHtml(
+                            submittedDate
+                        )}
+
+                    </small>
+
+                </div>
+
+
+                <span
+                    class="status-badge ${statusClass}"
+                >
+
+                    ${escapeHtml(
+                        statusText
+                    )}
+
+                </span>
+
+            </div>
+
+
+
+            <!-- REQUEST DETAILS -->
+
+            <div class="details-box">
+
+                <div class="row g-3">
+
+
+                    <!-- STUDENT NAME -->
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Student Name
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHtml(
+                                request.student_name
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- STUDENT ID -->
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Student ID
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHtml(
+                                request.roll_number
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- DEPARTMENT -->
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Department
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHtml(
+                                request.department
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- YEAR -->
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Year
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHtml(
+                                request.year
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- DESTINATION -->
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Destination
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHtml(
+                                request.destination
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- REASON -->
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Reason
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHtml(
+                                request.reason
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- OUTPASS DATE -->
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Outpass Date
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHtml(
+                                outpassDate
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- EXIT TIME -->
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Exit Time
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHtml(
+                                request.exit_time ||
+                                "-"
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- RETURN DATE ONLY -->
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Return Date
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHtml(
+                                returnDate
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- PARENT STATUS -->
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Parent Approval
+                        </div>
+
+                        <div
+                            class="detail-value ${
+                                parentStatusLower === "approved"
+                                    ? "text-success"
+                                    : ""
+                            }"
+                        >
+
+                            ${escapeHtml(
+                                parentStatus
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- MENTOR STATUS -->
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Mentor Approval
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHtml(
+                                mentorStatus
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- SECURITY STATUS -->
+
+                    <div class="col-md-4">
+
+                        <div class="detail-label">
+                            Security Status
+                        </div>
+
+                        <div class="detail-value">
+
+                            ${escapeHtml(
+                                securityStatus
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- APPROVAL SECTION -->
+
+            ${approvalSection}
+
+
+        </div>
+
+    `;
+
+}
+
+
+
+/* =====================================================
+   APPROVE REQUEST
+===================================================== */
+
+async function approveRequest(outpassId) {
+
+
+    const otpInput =
+        document.getElementById(
+            "otp-" + outpassId
+        );
+
+
+    const message =
+        document.getElementById(
+            "approvalMessage-" + outpassId
+        );
+
+
+    if (
+        !otpInput ||
+        !message
+    ) {
+
+        return;
+
+    }
+
+
+
+    /* =================================================
+       GET OTP
+    ================================================= */
+
+    const otp =
+        otpInput.value.trim();
+
+
+
+    /* =================================================
+       VALIDATE EMPTY OTP
+    ================================================= */
+
+    if (!otp) {
+
+        message.innerHTML = `
+
+            <div class="alert alert-warning">
+
+                Please enter the OTP.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    /* =================================================
+       VALIDATE OTP FORMAT
+    ================================================= */
+
+    if (
+        !/^\d{6}$/.test(otp)
+    ) {
+
+        message.innerHTML = `
+
+            <div class="alert alert-warning">
+
+                Please enter a valid 6-digit OTP.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    /* =================================================
+       DISABLE BUTTON
+    ================================================= */
+
+    const button =
+        otpInput
+            .closest(".otp-box")
+            .querySelector("button");
+
+
+    if (button) {
+
+        button.disabled = true;
+
+        button.innerText =
+            "Approving...";
+
+    }
+
+
+
+    try {
+
+
+        /* =================================================
+           CALL PARENT APPROVAL API
+        ================================================= */
+
+        const response =
+            await fetch(
+
+                API_URL +
+                "/api/outpasses/" +
+                encodeURIComponent(outpassId) +
+                "/parent-approve",
+
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+                        "Authorization":
+                            `Bearer ${token}`
+
+                    },
+
+                    body: JSON.stringify({
+
+                        otp: otp
+
+                    })
+
+                }
+
+            );
+
+
+
+        /* =================================================
+           READ RESPONSE
+        ================================================= */
+
+        const data =
+            await response.json();
+
+
+
+        /* =================================================
+           HANDLE ERROR
+        ================================================= */
+
+        if (!response.ok) {
+
+            throw new Error(
+
+                data.message ||
+                "Parent approval failed."
+
+            );
+
+        }
+
+
+
+        /* =================================================
+           SUCCESS MESSAGE
+        ================================================= */
+
+        message.innerHTML = `
+
+            <div class="alert alert-success">
+
+                ✓ Outpass approved successfully.
+
+            </div>
+
+        `;
+
+
+
+        /* =================================================
+           RELOAD DATA
+
+           This gets the updated status
+           directly from MySQL through Flask.
+        ================================================= */
+
+        setTimeout(
+            function() {
+                loadRequests();
+            },
+            800
+        );
+
+
+    }
+
+
+    catch (error) {
+
+
+        console.error(
+            "Approval error:",
+            error
+        );
+
+
+        message.innerHTML = `
+
+            <div class="alert alert-danger">
+
+                ${escapeHtml(
+                    error.message ||
+                    "Approval failed."
+                )}
+
+            </div>
+
+        `;
+
+
+        /* =================================================
+           ENABLE BUTTON AGAIN
+        ================================================= */
+
+        if (button) {
+
+            button.disabled = false;
+
+            button.innerText =
+                "✓ Approve Outpass";
+
+        }
+
+    }
+
+}
+
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(value) {
+
+
+    if (!value) {
+
+        return "-";
+
+    }
+
+
+    const stringValue =
+        String(value);
+
+
+    /* =================================================
+       HANDLE YYYY-MM-DD
+    ================================================= */
+
+    const parts =
+        stringValue.split("-");
+
+
+    if (
+        parts.length === 3
+    ) {
+
+        return (
+
+            parts[2] +
+            "-" +
+            parts[1] +
+            "-" +
+            parts[0]
+
+        );
+
+    }
+
+
+    return stringValue;
+
+}
+
+
+
+/* =====================================================
+   FORMAT DATE/TIME
+===================================================== */
+
+function formatDateTime(value) {
+
+
+    if (!value) {
+
+        return "-";
+
+    }
+
+
+    return String(value);
+
+}
+
+
+
+/* =====================================================
+   HTML ESCAPE
+===================================================== */
+
+function escapeHtml(value) {
+
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* =====================================================
+   JAVASCRIPT STRING ESCAPE
+===================================================== */
+
+function escapeJs(value) {
+
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+
+        .replace(
+            /'/g,
+            "\\'"
+        )
+
+        .replace(
+            /"/g,
+            '\\"'
+        )
+
+        .replace(
+            /\r/g,
+            "\\r"
+        )
+
+        .replace(
+            /\n/g,
+            "\\n"
+        );
+
+}
+
+
+
+/* =====================================================
+   START PAGE
+===================================================== */
+
+loadRequests();
+
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard - Smart Outpass</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            background-color: #f4f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar-custom {
+            background-color: #12355b;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: white !important;
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .page-container {
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        /* =====================================================
+           WELCOME
+        ===================================================== */
+
+        .welcome-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .welcome-title {
+            color: #12355b;
+            font-weight: bold;
+        }
+
+        .welcome-text {
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .api-status {
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+        .api-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .api-online {
+            background-color: #198754;
+        }
+
+        .api-offline {
+            background-color: #dc3545;
+        }
+
+        /* =====================================================
+           STAT CARDS
+        ===================================================== */
+
+        .stat-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            height: 100%;
+        }
+
+        .stat-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .student-icon {
+            background-color: #cff4fc;
+        }
+
+        .parent-icon {
+            background-color: #e2e3e5;
+        }
+
+        .mentor-icon {
+            background-color: #d1e7dd;
+        }
+
+        .security-icon {
+            background-color: #fff3cd;
+        }
+
+        .outpass-icon {
+            background-color: #e2d9f3;
+        }
+
+        .outside-icon {
+            background-color: #f8d7da;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #12355b;
+        }
+
+        .stat-title {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .section-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-top: 25px;
+        }
+
+        .section-title {
+            color: #12355b;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* =====================================================
+           QUICK ACTION
+        ===================================================== */
+
+        .action-card {
+            border: 1px solid #e2e6ea;
+            border-radius: 12px;
+            padding: 20px;
+            height: 100%;
+            transition: 0.2s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .action-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .action-title {
+            font-weight: bold;
+            color: #12355b;
+        }
+
+        .action-text {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           ACTIVITY
+        ===================================================== */
+
+        .activity-item {
+            border-bottom: 1px solid #e5e5e5;
+            padding: 15px 0;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-time {
+            color: #888;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .activity-empty {
+            text-align: center;
+            color: #888;
+            padding: 20px;
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status-badge {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-approved {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-outside {
+            background-color: #cff4fc;
+            color: #055160;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
+        .status-completed {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        /* =====================================================
+           INFO
+        ===================================================== */
+
+        .info-box {
+            background-color: #eef5ff;
+            border: 1px solid #cfe2ff;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .workflow-step {
+            margin-bottom: 8px;
+        }
+
+        /* =====================================================
+           ERROR
+        ===================================================== */
+
+        #dashboardError {
+            display: none;
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 768px) {
+
+            .page-container {
+                margin: 20px 10px;
+            }
+
+            .navbar .container-fluid {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar .container-fluid > div {
+                margin-top: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-custom">
+
+    <div class="container-fluid">
+
+        <a
+            class="navbar-brand"
+            href="adashboard.html"
+        >
+            SMART OUTPASS
+        </a>
+
+
+        <div>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="adashboard.html"
+            >
+                Dashboard
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="users.html"
+            >
+                Users
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="outpasses.html"
+            >
+                Outpasses
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="reports.html"
+            >
+                Reports
+            </a>
+
+
+            <a
+                class="nav-link d-inline-block"
+                href="../index.html"
+                id="logoutLink"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="container page-container">
+
+
+    <!-- =================================================
+         WELCOME
+    ================================================== -->
+
+    <div class="welcome-card">
+
+        <h2 class="welcome-title">
+            Admin Dashboard 👋
+        </h2>
+
+
+        <p class="welcome-text">
+
+            Manage users, monitor outpass activity,
+            and oversee the Smart Outpass Management System.
+
+        </p>
+
+
+        <div
+            id="apiStatus"
+            class="api-status text-muted"
+        >
+
+            <span class="api-dot api-offline"></span>
+
+            Checking Flask server...
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         ERROR MESSAGE
+    ================================================== -->
+
+    <div
+        id="dashboardError"
+        class="alert alert-danger"
+    ></div>
+
+
+
+    <!-- =================================================
+         STATISTICS
+    ================================================== -->
+
+    <div class="row g-4">
+
+
+        <!-- STUDENTS -->
+
+        <div class="col-md-4 col-lg-2">
+
+            <div class="stat-card">
+
+                <div class="stat-icon student-icon">
+                    🎓
+                </div>
+
+
+                <div
+                    class="stat-number"
+                    id="studentsCount"
+                >
+                    0
+                </div>
+
+
+                <div class="stat-title">
+                    Students
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PARENTS -->
+
+        <div class="col-md-4 col-lg-2">
+
+            <div class="stat-card">
+
+                <div class="stat-icon parent-icon">
+                    👨‍👩‍👧
+                </div>
+
+
+                <div
+                    class="stat-number"
+                    id="parentsCount"
+                >
+                    0
+                </div>
+
+
+                <div class="stat-title">
+                    Parents
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- MENTORS -->
+
+        <div class="col-md-4 col-lg-2">
+
+            <div class="stat-card">
+
+                <div class="stat-icon mentor-icon">
+                    👨‍🏫
+                </div>
+
+
+                <div
+                    class="stat-number"
+                    id="mentorsCount"
+                >
+                    0
+                </div>
+
+
+                <div class="stat-title">
+                    Mentors
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SECURITY -->
+
+        <div class="col-md-4 col-lg-2">
+
+            <div class="stat-card">
+
+                <div class="stat-icon security-icon">
+                    🛡️
+                </div>
+
+
+                <div
+                    class="stat-number"
+                    id="securityCount"
+                >
+                    0
+                </div>
+
+
+                <div class="stat-title">
+                    Security Staff
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TODAY OUTPASSES -->
+
+        <div class="col-md-4 col-lg-2">
+
+            <div class="stat-card">
+
+                <div class="stat-icon outpass-icon">
+                    📋
+                </div>
+
+
+                <div
+                    class="stat-number"
+                    id="todayOutpassesCount"
+                >
+                    0
+                </div>
+
+
+                <div class="stat-title">
+                    Today's Outpasses
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CURRENTLY OUTSIDE -->
+
+        <div class="col-md-4 col-lg-2">
+
+            <div class="stat-card">
+
+                <div class="stat-icon outside-icon">
+                    🚪
+                </div>
+
+
+                <div
+                    class="stat-number"
+                    id="outsideCount"
+                >
+                    0
+                </div>
+
+
+                <div class="stat-title">
+                    Currently Outside
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         QUICK ACTIONS
+    ================================================== -->
+
+    <div class="section-card">
+
+        <h5 class="section-title">
+            Quick Management
+        </h5>
+
+
+        <div class="row g-4">
+
+
+            <!-- USERS -->
+
+            <div class="col-md-4">
+
+                <div class="action-card">
+
+                    <div class="action-icon">
+                        👥
+                    </div>
+
+
+                    <div class="action-title">
+                        Manage Users
+                    </div>
+
+
+                    <p class="action-text">
+
+                        View and manage students, parents,
+                        mentors and security staff.
+
+                    </p>
+
+
+                    <a
+                        href="users.html"
+                        class="btn btn-primary"
+                    >
+                        Manage Users
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- OUTPASSES -->
+
+            <div class="col-md-4">
+
+                <div class="action-card">
+
+                    <div class="action-icon">
+                        📋
+                    </div>
+
+
+                    <div class="action-title">
+                        View Outpasses
+                    </div>
+
+
+                    <p class="action-text">
+
+                        Monitor submitted outpass requests
+                        and their approval status.
+
+                    </p>
+
+
+                    <a
+                        href="outpasses.html"
+                        class="btn btn-primary"
+                    >
+                        View Outpasses
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- REPORTS -->
+
+            <div class="col-md-4">
+
+                <div class="action-card">
+
+                    <div class="action-icon">
+                        📊
+                    </div>
+
+
+                    <div class="action-title">
+                        Reports
+                    </div>
+
+
+                    <p class="action-text">
+
+                        View system activity and
+                        outpass statistics.
+
+                    </p>
+
+
+                    <a
+                        href="reports.html"
+                        class="btn btn-primary"
+                    >
+                        View Reports
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         TODAY'S ACTIVITY
+    ================================================== -->
+
+    <div class="section-card">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <h5 class="section-title mb-0">
+                Today's Activity
+            </h5>
+
+
+            <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                id="refreshButton"
+            >
+                ↻ Refresh
+            </button>
+
+        </div>
+
+
+        <div id="activityContainer">
+
+            <div class="activity-empty">
+
+                Loading today's activity...
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         SYSTEM WORKFLOW
+    ================================================== -->
+
+    <div class="section-card">
+
+        <div class="info-box">
+
+            <h5>
+                📌 Complete System Workflow
+            </h5>
+
+
+            <div class="mt-3">
+
+
+                <div class="workflow-step">
+
+                    <strong>1.</strong>
+                    Student submits outpass.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>2.</strong>
+                    Parent receives OTP by email.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>3.</strong>
+                    Parent/student verifies the OTP.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>4.</strong>
+                    Parent approval is recorded.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>5.</strong>
+                    Mentor reviews the request.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>6.</strong>
+                    Mentor approves or rejects the request.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>7.</strong>
+                    Approved outpass becomes available
+                    for security verification.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>8.</strong>
+                    Security scans the student's QR code.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>9.</strong>
+                    Actual exit time is recorded.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>10.</strong>
+                    Student leaves the campus.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>11.</strong>
+                    Student returns to campus.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>12.</strong>
+                    Security scans the QR code again.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>13.</strong>
+                    Actual return time is recorded.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>14.</strong>
+                    Outpass is completed and stored
+                    in student history.
+
+                </div>
+
+
+                <div class="workflow-step">
+
+                    <strong>15.</strong>
+                    Relevant email notifications are
+                    recorded in the notification system.
+
+                </div>
+
+            </div>
+
+
+            <p class="mb-0 mt-3">
+
+                <strong>Admin:</strong>
+                Monitors and manages the complete system.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         DATA SOURCE NOTICE
+    ================================================== -->
+
+    <div class="alert alert-info mt-4">
+
+        <strong>
+            Live Database Dashboard:
+        </strong>
+
+        Statistics and activity are loaded from the
+        Flask backend and MySQL database.
+
+        No student, parent, mentor, security or outpass
+        values are hardcoded in this page.
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+    /* =====================================================
+       API CONFIGURATION
+    ===================================================== */
+
+    const API_URL =
+        "http://127.0.0.1:5000";
+
+
+    /* =====================================================
+       AUTHENTICATION
+    ===================================================== */
+
+    const token =
+        localStorage.getItem(
+            "smart_outpass_token"
+        );
+
+
+    const storedUser =
+        localStorage.getItem(
+            "smart_outpass_user"
+        );
+
+
+    let currentUser = null;
+
+
+    try {
+
+        currentUser =
+            storedUser
+                ? JSON.parse(storedUser)
+                : null;
+
+    }
+
+    catch (error) {
+
+        currentUser = null;
+
+    }
+
+
+
+    /* =====================================================
+       ELEMENT HELPERS
+    ===================================================== */
+
+    function element(id) {
+
+        return document.getElementById(id);
+
+    }
+
+
+
+    /* =====================================================
+       SHOW ERROR
+    ===================================================== */
+
+    function showError(message) {
+
+        const errorBox =
+            element("dashboardError");
+
+
+        if (!errorBox) {
+            return;
+        }
+
+
+        errorBox.textContent =
+            message || "Unable to load dashboard.";
+
+
+        errorBox.style.display =
+            "block";
+
+    }
+
+
+
+    /* =====================================================
+       HIDE ERROR
+    ===================================================== */
+
+    function hideError() {
+
+        const errorBox =
+            element("dashboardError");
+
+
+        if (!errorBox) {
+            return;
+        }
+
+
+        errorBox.style.display =
+            "none";
+
+    }
+
+
+
+    /* =====================================================
+       API STATUS
+    ===================================================== */
+
+    function setApiStatus(online) {
+
+        const status =
+            element("apiStatus");
+
+
+        if (!status) {
+            return;
+        }
+
+
+        if (online) {
+
+            status.className =
+                "api-status text-success";
+
+
+            status.innerHTML = `
+
+                <span
+                    class="api-dot api-online"
+                ></span>
+
+                Flask server connected
+
+            `;
+
+        }
+
+        else {
+
+            status.className =
+                "api-status text-danger";
+
+
+            status.innerHTML = `
+
+                <span
+                    class="api-dot api-offline"
+                ></span>
+
+                Flask server unavailable
+
+            `;
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       LOGOUT
+    ===================================================== */
+
+    function logout() {
+
+        localStorage.removeItem(
+            "smart_outpass_token"
+        );
+
+
+        localStorage.removeItem(
+            "smart_outpass_user"
+        );
+
+
+        window.location.href =
+            "../index.html";
+
+    }
+
+
+
+    /* =====================================================
+       API REQUEST
+    ===================================================== */
+
+    async function apiRequest(
+        endpoint,
+        options = {}
+    ) {
+
+        if (!token) {
+
+            logout();
+
+            throw new Error(
+                "Admin authentication required."
+            );
+
+        }
+
+
+        const headers = {
+
+            "Authorization":
+                "Bearer " + token,
+
+            "Content-Type":
+                "application/json"
+
+        };
+
+
+        Object.assign(
+            headers,
+            options.headers || {}
+        );
+
+
+        let response;
+
+
+        try {
+
+            response =
+                await fetch(
+                    API_URL + endpoint,
+                    {
+                        ...options,
+                        headers: headers
+                    }
+                );
+
+        }
+
+        catch (error) {
+
+            setApiStatus(false);
+
+            throw new Error(
+                "Unable to connect to Flask server. " +
+                "Make sure app.py is running on 127.0.0.1:5000."
+            );
+
+        }
+
+
+        if (response.status === 401) {
+
+            logout();
+
+            throw new Error(
+                "Admin session has expired."
+            );
+
+        }
+
+
+        if (response.status === 403) {
+
+            throw new Error(
+                "You do not have permission to access the Admin Dashboard."
+            );
+
+        }
+
+
+        let data = null;
+
+
+        try {
+
+            data =
+                await response.json();
+
+        }
+
+        catch (error) {
+
+            throw new Error(
+                "Server returned an invalid response."
+            );
+
+        }
+
+
+        setApiStatus(
+            response.ok
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data?.message ||
+                "Dashboard request failed."
+            );
+
+        }
+
+
+        if (
+            data &&
+            data.success === false
+        ) {
+
+            throw new Error(
+                data.message ||
+                "Server rejected the request."
+            );
+
+        }
+
+
+        return data;
+
+    }
+
+
+
+    /* =====================================================
+       UPDATE STATISTICS
+    ===================================================== */
+
+    function updateStatistics(
+        statistics
+    ) {
+
+        statistics =
+            statistics || {};
+
+
+        element(
+            "studentsCount"
+        ).textContent =
+            Number(
+                statistics.students || 0
+            );
+
+        element(
+            "parentsCount"
+        ).textContent =
+            Number(
+                statistics.parents || 0
+            );
+
+
+        element(
+            "mentorsCount"
+        ).textContent =
+            Number(
+                statistics.mentors || 0
+            );
+
+
+        element(
+            "securityCount"
+        ).textContent =
+            Number(
+                statistics.security_users || 0
+            );
+
+
+        element(
+            "todayOutpassesCount"
+        ).textContent =
+            Number(
+                statistics.today_outpasses || 0
+            );
+
+
+        element(
+            "outsideCount"
+        ).textContent =
+            Number(
+                statistics.currently_outside || 0
+            );
+
+    }
+
+
+
+    /* =====================================================
+       FORMAT DATE/TIME
+    ===================================================== */
+
+    function formatDateTime(
+        value
+    ) {
+
+        if (!value) {
+
+            return "Time unavailable";
+
+        }
+
+
+        const parsed =
+            new Date(
+                String(value).replace(
+                    " ",
+                    "T"
+                )
+            );
+
+
+        if (
+            Number.isNaN(
+                parsed.getTime()
+            )
+        ) {
+
+            return String(value);
+
+        }
+
+
+        return parsed.toLocaleString();
+
+    }
+
+
+
+    /* =====================================================
+       STATUS CLASS
+    ===================================================== */
+
+    function getStatusClass(
+        status
+    ) {
+
+        const normalized =
+            String(
+                status || ""
+            ).toLowerCase();
+
+
+        if (
+            normalized.includes(
+                "reject"
+            )
+        ) {
+
+            return "status-rejected";
+
+        }
+
+
+        if (
+            normalized.includes(
+                "outside"
+            ) ||
+            normalized.includes(
+                "exit"
+            )
+        ) {
+
+            return "status-outside";
+
+        }
+
+
+        if (
+            normalized.includes(
+                "complete"
+            ) ||
+            normalized.includes(
+                "return"
+            ) ||
+            normalized.includes(
+                "approv"
+            )
+        ) {
+
+            return "status-approved";
+
+        }
+
+
+        return "status-pending";
+
+    }
+
+
+
+    /* =====================================================
+       RENDER ACTIVITY
+    ===================================================== */
+
+    function renderActivity(
+        activities
+    ) {
+
+        const container =
+            element(
+                "activityContainer"
+            );
+
+
+        if (!container) {
+            return;
+        }
+
+
+        container.innerHTML = "";
+
+
+        if (
+            !Array.isArray(
+                activities
+            ) ||
+            activities.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="activity-empty">
+
+                    No activity has been recorded today.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        activities.forEach(
+            function(activity) {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "activity-item";
+
+
+                const title =
+                    activity.title ||
+                    activity.message ||
+                    "System activity";
+
+
+                const description =
+                    activity.description ||
+                    "";
+
+
+                const status =
+                    activity.status ||
+                    "Pending";
+
+
+                const time =
+                    activity.created_at ||
+                    activity.time ||
+                    "";
+
+
+                item.innerHTML = `
+
+                    <strong>
+                        ${escapeHtml(title)}
+                    </strong>
+
+                    <span
+                        class="status-badge
+                        ${getStatusClass(status)}
+                        float-end"
+                    >
+                        ${escapeHtml(status)}
+                    </span>
+
+                    <br>
+
+                    <small>
+                        ${escapeHtml(description)}
+                    </small>
+
+                    <div class="activity-time">
+
+                        ${escapeHtml(
+                            formatDateTime(time)
+                        )}
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(
+                    item
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================================
+       HTML ESCAPE
+    ===================================================== */
+
+    function escapeHtml(
+        value
+    ) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.textContent =
+            value === null ||
+            value === undefined
+                ? ""
+                : String(value);
+
+
+        return div.innerHTML;
+
+    }
+
+
+
+    /* =====================================================
+       LOAD DASHBOARD
+    ===================================================== */
+
+    async function loadDashboard() {
+
+        hideError();
+
+
+        try {
+
+            const data =
+                await apiRequest(
+                    "/api/admin/dashboard"
+                );
+
+
+            updateStatistics(
+                data.statistics
+            );
+
+
+            renderActivity(
+                data.activities ||
+                data.activity ||
+                []
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Admin dashboard error:",
+                error
+            );
+
+
+            showError(
+                error.message
+            );
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       REFRESH BUTTON
+    ===================================================== */
+
+    element(
+        "refreshButton"
+    ).addEventListener(
+        "click",
+        async function() {
+
+            const button =
+                this;
+
+
+            button.disabled =
+                true;
+
+
+            button.innerHTML = `
+
+                <span
+                    class="spinner-border
+                    spinner-border-sm
+                    me-1"
+                ></span>
+
+                Loading...
+
+            `;
+
+
+            try {
+
+                await loadDashboard();
+
+            }
+
+            finally {
+
+                button.disabled =
+                    false;
+
+
+                button.innerHTML =
+                    "↻ Refresh";
+
+            }
+
+        }
+    );
+
+
+
+    /* =====================================================
+       LOGOUT BUTTON
+    ===================================================== */
+
+    element(
+        "logoutLink"
+    ).addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            logout();
+
+        }
+    );
+
+
+
+    /* =====================================================
+       INITIAL PAGE CHECK
+    ===================================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            if (!token) {
+
+                alert(
+                    "Please login as Admin first."
+                );
+
+
+                logout();
+
+                return;
+
+            }
+
+
+            loadDashboard();
+
+        }
+    );
+
+
+
+    /* =====================================================
+       AUTO REFRESH
+    ===================================================== */
+
+    setInterval(
+        function() {
+
+            if (token) {
+
+                loadDashboard();
+
+            }
+
+        },
+        30000
+    );
+
+</script>
+
+
+</body>
+
+</html>
