@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Users - Smart Outpass</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            background-color: #f4f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar-custom {
+            background-color: #12355b;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: white !important;
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+
+        /* ================= MAIN ================= */
+
+        .page-container {
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        /* ================= HEADER ================= */
+
+        .page-header {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            color: #12355b;
+            font-weight: bold;
+        }
+
+        .page-subtitle {
+            color: #777;
+            margin-bottom: 0;
+        }
+
+        /* ================= STAT CARDS ================= */
+
+        .stat-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            height: 100%;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #12355b;
+        }
+
+        .stat-label {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-top: 25px;
+        }
+
+        .table th {
+            background-color: #12355b;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        /* ================= BADGES ================= */
+
+        .role-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .student-badge {
+            background-color: #cff4fc;
+            color: #055160;
+        }
+
+        .parent-badge {
+            background-color: #e2e3e5;
+            color: #41464b;
+        }
+
+        .mentor-badge {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .security-badge {
+            background-color: #fff3cd;
+            color: #664d03;
+        }
+
+        .active-badge {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .inactive-badge {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
+        /* ================= SEARCH ================= */
+
+        .search-area {
+            margin-bottom: 20px;
+        }
+
+        #addUserForm {
+            display: flex;
+            flex: 1 1 auto;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        #addUserForm .modal-body {
+            min-height: 0;
+            overflow-y: auto;
+        }
+
+        #addUserForm .modal-footer {
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 1;
+            background-color: white;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            .page-container {
+                margin: 20px 10px;
+            }
+
+            .table-card {
+                overflow-x: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-custom">
+
+    <div class="container-fluid">
+
+        <a
+            class="navbar-brand"
+            href="adashboard.html"
+        >
+            SMART OUTPASS
+        </a>
+
+
+        <div>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="adashboard.html"
+            >
+                Dashboard
+            </a>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="users.html"
+            >
+                Users
+            </a>
+
+            <a
+                class="nav-link d-inline-block me-3"
+                href="outpasses.html"
+            >
+                Outpasses
+            </a>
+
+            <a
+                class="nav-link d-inline-block"
+                href="../index.html"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="container page-container">
+
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <div class="page-header">
+
+        <h2 class="page-title">
+            User Management
+        </h2>
+
+        <p class="page-subtitle">
+            Manage students, parents, mentors and security staff.
+        </p>
+
+    </div>
+
+
+
+    <!-- =================================================
+         STATISTICS
+    ================================================== -->
+
+    <div class="row g-4">
+
+
+        <div class="col-md-3">
+
+            <div class="stat-card">
+
+                <div class="stat-number" id="studentsCount">
+                    250
+                </div>
+
+                <div class="stat-label">
+                    Total Students
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="stat-card">
+
+                <div class="stat-number" id="parentsCount">
+                    245
+                </div>
+
+                <div class="stat-label">
+                    Total Parents
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="stat-card">
+
+                <div class="stat-number" id="mentorsCount">
+                    25
+                </div>
+
+                <div class="stat-label">
+                    Total Mentors
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="stat-card">
+
+                <div class="stat-number" id="securityCount">
+                    12
+                </div>
+
+                <div class="stat-label">
+                    Security Staff
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         USER TABLE
+    ================================================== -->
+
+    <div class="table-card">
+
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <h5 class="mb-0">
+                Registered Users
+            </h5>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="openAddUserModal()"
+                data-bs-toggle="modal"
+                data-bs-target="#addUserModal"
+            >
+                + Add User
+            </button>
+
+        </div>
+
+
+
+        <!-- SEARCH -->
+
+        <div class="search-area">
+
+            <label
+                for="searchInput"
+                class="form-label fw-bold"
+            >
+                Search User
+            </label>
+
+
+            <input
+                type="text"
+                id="searchInput"
+                class="form-control"
+                placeholder="Search by name, ID, email or mobile number..."
+                onkeyup="searchUsers()"
+            >
+
+        </div>
+
+
+
+        <!-- ROLE FILTER -->
+
+        <div class="mb-4">
+
+            <label
+                for="roleFilter"
+                class="form-label fw-bold"
+            >
+                Filter by Role
+            </label>
+
+
+            <select
+                id="roleFilter"
+                class="form-select"
+                onchange="filterUsers()"
+            >
+
+                <option value="all">
+                    All Users
+                </option>
+
+                <option value="student">
+                    Students
+                </option>
+
+                <option value="parent">
+                    Parents
+                </option>
+
+                <option value="mentor">
+                    Mentors
+                </option>
+
+                <option value="security">
+                    Security Staff
+                </option>
+
+                <option value="admin">
+                    Admins
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <!-- TABLE -->
+
+        <div class="table-responsive">
+
+            <table
+                class="table table-bordered table-hover"
+                id="userTable"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            User ID
+                        </th>
+
+                        <th>
+                            Name
+                        </th>
+
+                        <th>
+                            Role
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Mobile Number
+                        </th>
+
+                        <th>
+                            Student ID
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="userRows"></tbody>
+
+            </table>
+
+        </div>
+
+
+
+        <!-- =================================================
+             DATABASE NOTICE
+        ================================================== -->
+
+        <div class="alert alert-info mt-4 mb-0" id="usersNotice">
+
+            <strong>
+                User data is loaded from the server.
+            </strong>
+
+            <strong>
+                Parent Mobile Number:
+            </strong>
+
+            The parent's mobile number will be stored
+            in the database and linked to the student's
+            record.
+
+            This number is used for:
+
+            <ul class="mb-0 mt-2">
+                <li>Parent approval OTP notification</li>
+                <li>Student exit notification</li>
+                <li>Student safe-return notification</li>
+            </ul>
+        </div>
+
+        <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <form id="addUserForm">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="userModalTitle">Add User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row g-3">
+                                <div class="col-md-6"><label class="form-label" for="newRole">Role</label><select class="form-select" id="newRole" required><option value="student">Student</option><option value="parent">Parent</option><option value="mentor">Mentor</option><option value="security">Security</option><option value="admin">Admin</option></select></div>
+                                <div class="col-md-6"><label class="form-label" for="newName">Full name</label><input class="form-control" id="newName" required></div>
+                                <div class="col-md-6"><label class="form-label" for="newUsername">Roll number / Employee ID / Username</label><input class="form-control" id="newUsername"></div>
+                                <div class="col-md-6"><label class="form-label" for="newEmail">Email</label><input class="form-control" id="newEmail" type="email"></div>
+                                <div class="col-md-6"><label class="form-label" for="newDepartment">Department</label><input class="form-control" id="newDepartment"></div>
+                                <div class="col-md-6"><label class="form-label" for="newYear">Year</label><input class="form-control" id="newYear"></div>
+                                <div class="col-md-6"><label class="form-label" for="newStudentRoll">Linked student roll number (parent)</label><input class="form-control" id="newStudentRoll"></div>
+                                <div class="col-md-6"><label class="form-label" id="mobileLabel" for="newMobile">Mobile number</label><input class="form-control" id="newMobile" type="tel"></div>
+                                <div class="col-md-6"><label class="form-label" for="newRelationship">Relationship (parent)</label><input class="form-control" id="newRelationship"></div>
+                                <div class="col-md-6">
+                                    <label class="form-label" id="passwordLabel" for="newPassword">Password (leave blank for default)</label>
+                                    <div class="input-group">
+                                        <input class="form-control" id="newPassword" type="password" autocomplete="new-password" aria-describedby="toggleNewPassword">
+                                        <button class="btn btn-outline-secondary" id="toggleNewPassword" type="button" aria-controls="newPassword" aria-label="Show password" aria-pressed="false">Show</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Create User</button></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="admin-api.js"></script>
+<script>
+
+
+    const userRows = document.getElementById("userRows");
+    let users = [];
+    let editingUser = null;
+    const roleClasses = { student: "student-badge", parent: "parent-badge", mentor: "mentor-badge", security: "security-badge", admin: "parent-badge" };
+    const newPasswordInput = document.getElementById("newPassword");
+    const toggleNewPasswordButton = document.getElementById("toggleNewPassword");
+
+    function resetPasswordVisibility() {
+        newPasswordInput.type = "password";
+        toggleNewPasswordButton.textContent = "Show";
+        toggleNewPasswordButton.setAttribute("aria-label", "Show password");
+        toggleNewPasswordButton.setAttribute("aria-pressed", "false");
+    }
+
+    toggleNewPasswordButton.addEventListener("click", () => {
+        const isVisible = newPasswordInput.type === "text";
+        newPasswordInput.type = isVisible ? "password" : "text";
+        toggleNewPasswordButton.textContent = isVisible ? "Show" : "Hide";
+        toggleNewPasswordButton.setAttribute("aria-label", isVisible ? "Show password" : "Hide password");
+        toggleNewPasswordButton.setAttribute("aria-pressed", String(!isVisible));
+    });
+
+    function renderUsers() {
+        const search = document.getElementById("searchInput").value.toLowerCase();
+        const role = document.getElementById("roleFilter").value;
+        const filtered = users.filter((user) => {
+            const text = [user.username, user.name, user.email, user.mobile_number, user.student_roll_number, user.role, user.status].join(" ").toLowerCase();
+            return text.includes(search) && (role === "all" || String(user.role).toLowerCase() === role);
+        });
+
+        userRows.innerHTML = filtered.length ? filtered.map((user) => {
+            const userRole = String(user.role || "").toLowerCase();
+            const statusClass = String(user.status).toLowerCase() === "active" ? "active-badge" : "inactive-badge";
+            return `<tr>
+                <td>${adminEscape(user.username || `${user.role} #${user.id}`)}</td>
+                <td>${adminEscape(user.name)}</td>
+                <td><span class="role-badge ${roleClasses[userRole] || "parent-badge"}">${adminEscape(user.role)}</span></td>
+                <td>${adminEscape(user.email)}</td>
+                <td>${adminEscape(user.mobile_number)}</td>
+                <td>${adminEscape(user.student_roll_number || (userRole === "student" ? user.username : "-"))}</td>
+                <td><span class="role-badge ${statusClass}">${adminEscape(user.status)}</span></td>
+                <td><button class="btn btn-sm btn-outline-primary me-1" onclick="editUser('${userRole}', ${Number(user.id)})">Edit</button><button class="btn btn-sm btn-outline-secondary" onclick="toggleUserStatus('${userRole}', ${Number(user.id)}, '${adminEscape(user.status)}')">${user.status === "Active" ? "Disable" : "Enable"}</button></td>
+            </tr>`;
+        }).join("") : `<tr><td colspan="8" class="text-center text-muted">No matching users found.</td></tr>`;
+    }
+
+    async function loadUsers() {
+        clearAdminError();
+        try {
+            const data = await adminApiRequest("/api/admin/users");
+            users = data.users || [];
+            const summary = data.summary || {};
+            document.getElementById("studentsCount").textContent = Number(summary.students || 0);
+            document.getElementById("parentsCount").textContent = Number(summary.parents || 0);
+            document.getElementById("mentorsCount").textContent = Number(summary.mentors || 0);
+            document.getElementById("securityCount").textContent = Number(summary.security || 0);
+            renderUsers();
+        } catch (error) {
+            showAdminError(error.message);
+            userRows.innerHTML = `<tr><td colspan="8" class="text-center text-muted">Users could not be loaded.</td></tr>`;
+        }
+    }
+
+    function searchUsers() { renderUsers(); }
+    function filterUsers() { renderUsers(); }
+
+    function updateMobileLabel() {
+        const role = document.getElementById("newRole").value;
+        document.getElementById("mobileLabel").textContent = role === "parent"
+            ? "Parent mobile number"
+            : "Student mobile number";
+    }
+
+    function openAddUserModal() {
+        editingUser = null;
+        document.getElementById("addUserForm").reset();
+        resetPasswordVisibility();
+        document.getElementById("newRole").disabled = false;
+        document.getElementById("userModalTitle").textContent = "Add User";
+        document.getElementById("passwordLabel").textContent = "Password (leave blank for default)";
+        document.querySelector("#addUserForm button[type='submit']").textContent = "Create User";
+        updateMobileLabel();
+    }
+
+    async function editUser(role, userId) {
+        try {
+            const data = await adminApiRequest(`/api/admin/users/${encodeURIComponent(role)}/${userId}`);
+            const user = data.user;
+            editingUser = { role, userId };
+            document.getElementById("newRole").value = role;
+            document.getElementById("newRole").disabled = true;
+            updateMobileLabel();
+            document.getElementById("newName").value = user.name || "";
+            document.getElementById("newUsername").value = user.roll_number || user.employee_id || user.username || "";
+            document.getElementById("newEmail").value = user.email || "";
+            document.getElementById("newDepartment").value = user.department || "";
+            document.getElementById("newYear").value = user.year || "";
+            document.getElementById("newStudentRoll").value = user.student_roll_number || "";
+            document.getElementById("newMobile").value = user.mobile_number || "";
+            document.getElementById("newRelationship").value = user.relationship || "";
+            document.getElementById("newPassword").value = "";
+            resetPasswordVisibility();
+            document.getElementById("passwordLabel").textContent = "New password (leave blank to keep current)";
+            document.getElementById("userModalTitle").textContent = `Edit ${role} user`;
+            document.querySelector("#addUserForm button[type='submit']").textContent = "Save Changes";
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("addUserModal")).show();
+        } catch (error) {
+            showAdminError(error.message);
+        }
+    }
+
+    async function viewUser(role, userId) {
+        try {
+            const data = await adminApiRequest(`/api/admin/users/${encodeURIComponent(role)}/${userId}`);
+            alert(Object.entries(data.user).map(([key, value]) => `${key.replaceAll("_", " ")}: ${value ?? "-"}`).join("\n"));
+        } catch (error) {
+            showAdminError(error.message);
+        }
+    }
+
+    async function toggleUserStatus(role, userId, currentStatus) {
+        const status = currentStatus === "Active" ? "Inactive" : "Active";
+        if (!confirm(`Set this ${role} account to ${status}?`)) return;
+        try {
+            await adminApiRequest(`/api/admin/users/${encodeURIComponent(role)}/${userId}/status`, { method: "PATCH", body: JSON.stringify({ status }) });
+            await loadUsers();
+        } catch (error) {
+            showAdminError(error.message);
+        }
+    }
+
+    document.getElementById("searchInput").addEventListener("input", renderUsers);
+    document.getElementById("roleFilter").addEventListener("change", renderUsers);
+    document.getElementById("newRole").addEventListener("change", updateMobileLabel);
+    document.getElementById("addUserForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const role = editingUser ? editingUser.role : document.getElementById("newRole").value;
+        const payload = {
+            role,
+            name: document.getElementById("newName").value.trim(),
+            username: document.getElementById("newUsername").value.trim(),
+            email: document.getElementById("newEmail").value.trim(),
+            department: document.getElementById("newDepartment").value.trim(),
+            year: document.getElementById("newYear").value.trim(),
+            student_roll_number: document.getElementById("newStudentRoll").value.trim(),
+            mobile_number: document.getElementById("newMobile").value.trim(),
+            relationship: document.getElementById("newRelationship").value.trim(),
+            password: document.getElementById("newPassword").value
+        };
+        try {
+            if (editingUser) {
+                await adminApiRequest(`/api/admin/users/${encodeURIComponent(editingUser.role)}/${editingUser.userId}`, { method: "PUT", body: JSON.stringify(payload) });
+            } else {
+                await adminApiRequest("/api/admin/users", { method: "POST", body: JSON.stringify(payload) });
+            }
+            bootstrap.Modal.getInstance(document.getElementById("addUserModal")).hide();
+            editingUser = null;
+            document.getElementById("newRole").disabled = false;
+            event.target.reset();
+            resetPasswordVisibility();
+            await loadUsers();
+        } catch (error) {
+            showAdminError(error.message);
+        }
+    });
+
+    userRows.innerHTML = "";
+    loadUsers();
+
+
+</script>
+
+
+</body>
+
+</html>
